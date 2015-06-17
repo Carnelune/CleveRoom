@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string name="app_name">CleveRoom</string>
+<string name="txt_select_bridge">Please select a bridge to use for this app</string>
+<string name="txt_select_light">Please select a light to use for this app</string>
+<string name="find_new_bridge">Find new bridge</string>
+<string name="connecting">Connecting ...</string>
+<string name="search_progress">Searching ...</string>
+<string name="title_error">Error</string>
+<string name="txt_pushlink">Pushlink</string>
+<string name="no_bridge">No Bridge Found.   Start Bridge Search</string>
+<string name="select_bridge">Available Access Points</string>
+<string name="app_light">Available lights</string>
+<string name="act">Main app</string>
+<string name="verify_bridge">Vérification du pont</string>
+<string name="light_name"></string>
+<string name="menu_change_name">Change the lamps name</string>
+
+<string name="btn_random">Random Lights</string>
+<string name="btn_on">Switch On Lights</string>
+<string name="btn_off">Switch Off Lights</string>
+<string name="btn_ok">Ok</string>
+<string name="btn_pushlink">Press the link button on the bridge</string>
+
+</resources>
