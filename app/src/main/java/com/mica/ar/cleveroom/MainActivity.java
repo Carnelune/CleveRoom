@@ -38,6 +38,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         phHueSDK = PHHueSDK.create();
         PHBridge bridge = phHueSDK.getSelectedBridge();
+
+        Intent i = getIntent();
+
         Preferences prefs = Preferences.getInstance(getApplicationContext());
         String lampe_id = prefs.getLightChose();
         String lampe = "";
@@ -81,28 +84,9 @@ public class MainActivity extends Activity {
 
         });
 
-        Intent i = getIntent();
-        String name = i.getStringExtra(ChangeName.newName);
-        if(name != "") {
-            ChangeName(name);
-        }
-    }
-
-    public void ChangeName(String name){
-        PHBridge bridge = phHueSDK.getSelectedBridge();
-        Preferences prefs = Preferences.getInstance(getApplicationContext());
-        String lampe_id = prefs.getLightChose();
-
-        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-
-        for (PHLight light : allLights) {
-            if(light.getIdentifier().equals(lampe_id)) {
-                light.setName(name);
-            }
-        }
 
     }
-//lol
+
     public void randomLights() {
         PHBridge bridge = phHueSDK.getSelectedBridge();
 

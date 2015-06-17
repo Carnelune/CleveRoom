@@ -12,6 +12,12 @@ package com.mica.ar.cleveroom;
         import android.view.View.OnClickListener;
         import android.widget.Toast;
 
+        import com.philips.lighting.hue.sdk.PHHueSDK;
+        import com.philips.lighting.model.PHBridge;
+        import com.philips.lighting.model.PHLight;
+
+        import java.util.List;
+
 /**
  * Created by sarah on 15/06/2015.
  */
@@ -69,15 +75,21 @@ public class ChangeName extends Activity {
             }
             else {
                 Toast.makeText(ChangeName.this, "Nom modifie", Toast.LENGTH_SHORT).show();
+                PHHueSDK phHueSDK;
+                phHueSDK = PHHueSDK.create();
+                PHBridge bridge = phHueSDK.getSelectedBridge();
+                Preferences prefs = Preferences.getInstance(getApplicationContext());
+                String lampe_id = prefs.getLightChose();
+                String lampe = "";
+                List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
-
-
-
+                for (PHLight light : allLights) {
+                    if(light.getIdentifier().equals(lampe_id)) {
+                       light.setName(nom);
+                    }
+                }
                 Intent retour = new Intent(ChangeName.this, MainActivity.class);
-                // On rajoute un extra
-                retour.putExtra(newName, nom);
 
-                // Puis on lance l'intent !
                 startActivity(retour);
             }
         }
@@ -86,15 +98,11 @@ public class ChangeName extends Activity {
     private OnClickListener annulerListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            String nom = "";
 
             Toast.makeText(ChangeName.this, "Operation annulee", Toast.LENGTH_SHORT).show();
 
-
             Intent retour = new Intent(ChangeName.this, MainActivity.class);
-            retour.putExtra(newName, nom);
 
-            // Puis on lance l'intent !
             startActivity(retour);
         }
     };
