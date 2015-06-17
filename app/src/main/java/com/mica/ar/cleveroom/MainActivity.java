@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
         }
 
     }
-
+//lol
     public void randomLights() {
         PHBridge bridge = phHueSDK.getSelectedBridge();
 
@@ -138,6 +138,7 @@ public class MainActivity extends Activity {
             lightState.setOn(false);
             bridge.updateLightState(light, lightState, listener);
         }
+        //OJFohe
     }
 
     PHLightListener listener = new PHLightListener() {
