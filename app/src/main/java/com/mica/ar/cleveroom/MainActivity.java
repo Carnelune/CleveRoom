@@ -39,15 +39,20 @@ public class MainActivity extends Activity {
         phHueSDK = PHHueSDK.create();
         PHBridge bridge = phHueSDK.getSelectedBridge();
         Preferences prefs = Preferences.getInstance(getApplicationContext());
-        String lampe_id = prefs.getLightChose();
+        final String lampe_id = prefs.getLightChose();
         String lampe = "";
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+        //double i = 1;
 
         for (PHLight light : allLights) {
+            light.setName("lampe");
             if(light.getIdentifier().equals(lampe_id)) {
                 lampe=light.getName();
+
+
             }
         }
+
         TextView t1 = (TextView) findViewById(R.id.lightname);
         t1.setText(lampe);
         Button randomButton;
@@ -66,7 +71,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                lightOn();
+                lightOn(lampe_id);
             }
 
         });
@@ -83,7 +88,7 @@ public class MainActivity extends Activity {
 
         Intent i = getIntent();
         String name = i.getStringExtra(ChangeName.newName);
-        if(name != "") {
+        if(!(name.equals(""))){
             ChangeName(name);
         }
     }
@@ -111,21 +116,34 @@ public class MainActivity extends Activity {
 
         for (PHLight light : allLights) {
             PHLightState lightState = new PHLightState();
+
             lightState.setHue(rand.nextInt(MAX_HUE));
             bridge.updateLightState(light, lightState, listener);
+
         }
     }
 
-    public void lightOn() {
+    public void lightOn(String lampe_id) {
         PHBridge bridge = phHueSDK.getSelectedBridge();
 
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
         for (PHLight light : allLights) {
-            PHLightState lightState = new PHLightState();
-            lightState.setOn(true);
-            bridge.updateLightState(light, lightState, listener);
+            if(light.getIdentifier().equals(lampe_id)) {
+
+                PHLightState lightState = new PHLightState();
+                lightState.setOn(true);
+                bridge.updateLightState(light, lightState, listener);
+                //String toto = light.getName();
+                System.out.println(light.getName());
+            }
+
         }
+
+    }
+
+    public void doPrintName(PHLight light){
+
     }
 
     public void lightOff() {
