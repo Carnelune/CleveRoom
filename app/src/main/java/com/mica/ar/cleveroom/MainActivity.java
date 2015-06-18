@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                preferences();
+                Dopreferences();
             }
 
         });
@@ -124,14 +124,14 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void changeColor(){
+    public void changeColor() {
 
         Intent intent = new Intent(MainActivity.this, Colors.class);
         startActivity(intent);
 
     }
 
-    public void preferences(){
+    public void Dopreferences(){
         Intent intent = new Intent(MainActivity.this, SetPreferences.class);
         startActivity(intent);
 
@@ -186,16 +186,53 @@ public class MainActivity extends Activity {
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.changeName:
                 Intent intent = new Intent(MainActivity.this, ChangeName.class);
                 startActivity(intent);
                 return true;
+            case R.id.spotLight:
+                doClignoter();
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void doClignoter() {
+        Preferences prefs = Preferences.getInstance(getApplicationContext());
+        final String lampe_id = prefs.getLightChose();
+        PHBridge bridge = phHueSDK.getSelectedBridge();
+        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+        int i;
+        for(i=0; i<65280; i=i+6528) {
+            for (PHLight light : allLights) {
+                if(light.getIdentifier().equals(lampe_id)){
+                    PHLightState lightState = new PHLightState();
+                    lightState.setOn(true);
+                    bridge.updateLightState(light, lightState, listener);
+                    lightState.setHue(i);
+                }
+
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            lightOff(lampe_id);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
