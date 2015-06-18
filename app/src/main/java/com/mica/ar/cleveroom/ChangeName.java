@@ -73,7 +73,7 @@ public class ChangeName extends Activity {
         @Override
         public void onClick(View v) {
             String nom = name.getText().toString();
-            if (nom.equals("")) {
+            if ((nom.equals("")) || nom.length()>32) {
                 Toast.makeText(ChangeName.this, "Error name", Toast.LENGTH_SHORT).show();
 
             }
