@@ -18,11 +18,11 @@
 
 
 <string name="menu_change_name">Change the lamps name</string>
-<string name = "menu_add_pref">Add settings</string>
+<string name = "menu_add_pref">Add preferences</string>
 <string name ="menu_spot_light">Spot the light</string>
 
 <string name="btn_color">Change lights</string>
-<string name="btn_pref">Settings</string>
+<string name="btn_pref">Preferences</string>
 <string name="btn_on">ON</string>
 <string name="btn_off">OFF</string>
 <string name="btn_ok">Ok</string>

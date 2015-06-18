@@ -70,6 +70,28 @@ public class MainActivity extends Activity {
 
         });
 
+        Button colorButton;
+        colorButton = (Button) findViewById(R.id.changeColor);
+        colorButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                changeColor();
+            }
+
+        });
+
+        Button prefButton;
+        prefButton = (Button) findViewById(R.id.preferences);
+        prefButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                preferences();
+            }
+
+        });
+
 
     }
 
@@ -100,6 +122,19 @@ public class MainActivity extends Activity {
                 bridge.updateLightState(light, lightState, listener);
             }
         }
+    }
+
+    public void changeColor(){
+
+        Intent intent = new Intent(MainActivity.this, Colors.class);
+        startActivity(intent);
+
+    }
+
+    public void preferences(){
+        Intent intent = new Intent(MainActivity.this, SetPreferences.class);
+        startActivity(intent);
+
     }
 
     PHLightListener listener = new PHLightListener() {
@@ -161,5 +196,12 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(MainActivity.this, ListLightActivity.class);
+        startActivity(intent);
     }
 }

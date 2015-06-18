@@ -93,9 +93,7 @@ public class ChangeName extends Activity {
                        bridge.updateLight(light,listener);
                     }
                 }
-                Intent retour = new Intent(ChangeName.this, MainActivity.class);
-
-                startActivity(retour);
+                ChangeName.this.finish();
             }
         }
     };
@@ -106,9 +104,11 @@ public class ChangeName extends Activity {
 
             Toast.makeText(ChangeName.this, "Operation annulee", Toast.LENGTH_SHORT).show();
 
-            Intent retour = new Intent(ChangeName.this, MainActivity.class);
 
-            startActivity(retour);
+
+            ChangeName.this.finish();
+
+
         }
     };
 

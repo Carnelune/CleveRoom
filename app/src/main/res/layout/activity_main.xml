@@ -43,7 +43,7 @@
         android:layout_marginTop ="30dip"/>
 
     <Button
-        android:id="@+id/settings"
+        android:id="@+id/preferences"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/changeColor"
