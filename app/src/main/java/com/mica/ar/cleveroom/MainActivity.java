@@ -21,14 +21,13 @@ import com.philips.lighting.model.PHLightState;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Fichier de l'activité principale
  */
 public class MainActivity extends Activity {
     private PHHueSDK phHueSDK;
-    private static final int MAX_HUE = 65535;
+    //private static final int MAX_HUE = 65535;
     public static final String TAG = "QuickStart";
 
     @Override
@@ -38,11 +37,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         phHueSDK = PHHueSDK.create();
         PHBridge bridge = phHueSDK.getSelectedBridge();
-
-        Intent i = getIntent();
-
         Preferences prefs = Preferences.getInstance(getApplicationContext());
-        String lampe_id = prefs.getLightChose();
+        final String lampe_id = prefs.getLightChose();
         String lampe = "";
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
@@ -59,7 +55,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                lightOn();
+                lightOn(lampe_id);
             }
 
         });
@@ -69,7 +65,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                lightOff();
+                lightOff(lampe_id);
             }
 
         });
@@ -77,27 +73,32 @@ public class MainActivity extends Activity {
 
     }
 
-    public void lightOn() {
+
+    public void lightOn(String id) {
         PHBridge bridge = phHueSDK.getSelectedBridge();
 
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
         for (PHLight light : allLights) {
-            PHLightState lightState = new PHLightState();
-            lightState.setOn(true);
-            bridge.updateLightState(light, lightState, listener);
+            if(light.getIdentifier().equals(id)) {
+                PHLightState lightState = new PHLightState();
+                lightState.setOn(true);
+                bridge.updateLightState(light, lightState, listener);
+            }
         }
     }
 
-    public void lightOff() {
+    public void lightOff(String id) {
         PHBridge bridge = phHueSDK.getSelectedBridge();
 
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
         for (PHLight light : allLights) {
-            PHLightState lightState = new PHLightState();
-            lightState.setOn(false);
-            bridge.updateLightState(light, lightState, listener);
+            if(light.getIdentifier().equals(id)) {
+                PHLightState lightState = new PHLightState();
+                lightState.setOn(false);
+                bridge.updateLightState(light, lightState, listener);
+            }
         }
         //OJFohe
     }
