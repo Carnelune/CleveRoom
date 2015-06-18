@@ -53,16 +53,6 @@ public class MainActivity extends Activity {
         }
         TextView t1 = (TextView) findViewById(R.id.lightname);
         t1.setText(lampe);
-        Button randomButton;
-        randomButton = (Button) findViewById(R.id.buttonRand);
-        randomButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                randomLights();
-            }
-
-        });
         Button onButton;
         onButton = (Button) findViewById(R.id.buttonOn);
         onButton.setOnClickListener(new View.OnClickListener() {
@@ -85,19 +75,6 @@ public class MainActivity extends Activity {
         });
 
 
-    }
-
-    public void randomLights() {
-        PHBridge bridge = phHueSDK.getSelectedBridge();
-
-        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-        Random rand = new Random();
-
-        for (PHLight light : allLights) {
-            PHLightState lightState = new PHLightState();
-            lightState.setHue(rand.nextInt(MAX_HUE));
-            bridge.updateLightState(light, lightState, listener);
-        }
     }
 
     public void lightOn() {
