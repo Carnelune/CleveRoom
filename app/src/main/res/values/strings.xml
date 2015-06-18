@@ -15,11 +15,16 @@
 <string name="act">Main app</string>
 <string name="verify_bridge">Vérification du pont</string>
 <string name="light_name"></string>
-<string name="menu_change_name">Change the lamps name</string>
 
-<string name="btn_random">Random Lights</string>
-<string name="btn_on">Switch On Lights</string>
-<string name="btn_off">Switch Off Lights</string>
+
+<string name="menu_change_name">Change the lamps name</string>
+<string name = "menu_add_pref">Add settings</string>
+<string name ="menu_spot_light">Spot the light</string>
+
+<string name="btn_color">Change lights</string>
+<string name="btn_pref">Settings</string>
+<string name="btn_on">ON</string>
+<string name="btn_off">OFF</string>
 <string name="btn_ok">Ok</string>
 <string name="btn_pushlink">Press the link button on the bridge</string>
 
