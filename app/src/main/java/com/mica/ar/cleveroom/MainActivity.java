@@ -199,6 +199,10 @@ public class MainActivity extends Activity {
             case R.id.spotLight:
                 doClignoter();
                 return true;
+            case R.id.addPref:
+                Intent pref = new Intent(MainActivity.this, AddPreferences.class);
+                startActivity(pref);
+
 
         }
         return super.onOptionsItemSelected(item);

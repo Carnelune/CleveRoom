@@ -39,6 +39,18 @@
                 android:name=".ChangeName"
                 android:label="@string/menu_change_name" >
             </activity>
+            <activity
+                android:name=".AddPreferences"
+                android:label="@string/menu_change_name" >
+            </activity>
+            <activity
+                android:name=".SetPreferences"
+                android:label="@string/menu_change_name" >
+            </activity>
+            <activity
+                android:name=".Colors"
+                android:label="@string/menu_change_name" >
+            </activity>
 
         </application>
 
