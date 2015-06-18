@@ -6,30 +6,34 @@ package com.mica.ar.cleveroom;
         import android.os.Bundle;
         import android.text.Editable;
         import android.text.TextWatcher;
+        import android.util.Log;
         import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
         import android.view.View.OnClickListener;
         import android.widget.Toast;
 
+        import com.philips.lighting.hue.listener.PHLightListener;
         import com.philips.lighting.hue.sdk.PHHueSDK;
         import com.philips.lighting.model.PHBridge;
+        import com.philips.lighting.model.PHBridgeResource;
+        import com.philips.lighting.model.PHHueError;
         import com.philips.lighting.model.PHLight;
 
         import java.util.List;
+        import java.util.Map;
 
 /**
  * Created by sarah on 15/06/2015.
+ *
  */
 
-
 public class ChangeName extends Activity {
-
-    public final static String newName = "com.philips.lighting.quickstar.newName";
 
     EditText name = null;
     Button ok = null;
     Button annuler = null;
+    public static final String TAG = "CleveRoom";
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupchangename);
@@ -80,12 +84,13 @@ public class ChangeName extends Activity {
                 PHBridge bridge = phHueSDK.getSelectedBridge();
                 Preferences prefs = Preferences.getInstance(getApplicationContext());
                 String lampe_id = prefs.getLightChose();
-                String lampe = "";
+
                 List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
                 for (PHLight light : allLights) {
                     if(light.getIdentifier().equals(lampe_id)) {
                        light.setName(nom);
+                       bridge.updateLight(light,listener);
                     }
                 }
                 Intent retour = new Intent(ChangeName.this, MainActivity.class);
@@ -106,4 +111,33 @@ public class ChangeName extends Activity {
             startActivity(retour);
         }
     };
+
+    PHLightListener listener = new PHLightListener() {
+
+        @Override
+        public void onSuccess() {
+        }
+
+        @Override
+        public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
+            Log.w(TAG, "Light has updated");
+        }
+
+        @Override
+        public void onError(int arg0, String arg1) {
+        }
+
+        @Override
+        public void onReceivingLightDetails(PHLight arg0) {
+        }
+
+        @Override
+        public void onReceivingLights(List<PHBridgeResource> arg0) {
+        }
+
+        @Override
+        public void onSearchComplete() {
+        }
+    };
+
 }

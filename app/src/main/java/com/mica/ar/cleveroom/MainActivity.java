@@ -28,7 +28,7 @@ import java.util.Map;
 public class MainActivity extends Activity {
     private PHHueSDK phHueSDK;
     //private static final int MAX_HUE = 65535;
-    public static final String TAG = "QuickStart";
+    public static final String TAG = "CleveRoom";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,7 +100,6 @@ public class MainActivity extends Activity {
                 bridge.updateLightState(light, lightState, listener);
             }
         }
-        //OJFohe
     }
 
     PHLightListener listener = new PHLightListener() {
