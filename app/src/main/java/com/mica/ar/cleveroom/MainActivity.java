@@ -70,6 +70,28 @@ public class MainActivity extends Activity {
 
         });
 
+        Button colorButton;
+        colorButton = (Button) findViewById(R.id.changeColor);
+        colorButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                changeColor();
+            }
+
+        });
+
+        Button prefButton;
+        prefButton = (Button) findViewById(R.id.preferences);
+        prefButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Dopreferences();
+            }
+
+        });
+
 
     }
 
@@ -100,6 +122,19 @@ public class MainActivity extends Activity {
                 bridge.updateLightState(light, lightState, listener);
             }
         }
+    }
+
+    public void changeColor() {
+
+        Intent intent = new Intent(MainActivity.this, Colors.class);
+        startActivity(intent);
+
+    }
+
+    public void Dopreferences(){
+        Intent intent = new Intent(MainActivity.this, ApplyPreferences.class);
+        startActivity(intent);
+
     }
 
     PHLightListener listener = new PHLightListener() {
@@ -151,15 +186,63 @@ public class MainActivity extends Activity {
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.changeName:
                 Intent intent = new Intent(MainActivity.this, ChangeName.class);
                 startActivity(intent);
                 return true;
+            case R.id.spotLight:
+                doClignoter();
+                return true;
+            case R.id.addPref:
+                Intent pref = new Intent(MainActivity.this, AddPreferences.class);
+                startActivity(pref);
+
+
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void doClignoter() {
+        Preferences prefs = Preferences.getInstance(getApplicationContext());
+        final String lampe_id = prefs.getLightChose();
+        PHBridge bridge = phHueSDK.getSelectedBridge();
+        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+        int i;
+        for(i=0; i<65280; i=i+6528) {
+            for (PHLight light : allLights) {
+                if(light.getIdentifier().equals(lampe_id)){
+                    PHLightState lightState = new PHLightState();
+                    lightState.setOn(true);
+                    bridge.updateLightState(light, lightState, listener);
+                    lightState.setHue(i);
+                }
+
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            lightOff(lampe_id);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(MainActivity.this, ListLightActivity.class);
+        startActivity(intent);
     }
 }
