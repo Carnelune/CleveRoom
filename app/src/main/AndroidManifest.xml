@@ -44,12 +44,12 @@
                 android:label="@string/menu_change_name" >
             </activity>
             <activity
-                android:name=".SetPreferences"
+                android:name=".ApplyPreferences"
                 android:label="@string/menu_change_name" >
             </activity>
             <activity
                 android:name=".Colors"
-                android:label="@string/menu_change_name" >
+                android:label="@string/change_color" >
             </activity>
 
         </application>

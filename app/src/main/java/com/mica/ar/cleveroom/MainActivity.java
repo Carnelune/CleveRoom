@@ -132,7 +132,7 @@ public class MainActivity extends Activity {
     }
 
     public void Dopreferences(){
-        Intent intent = new Intent(MainActivity.this, SetPreferences.class);
+        Intent intent = new Intent(MainActivity.this, ApplyPreferences.class);
         startActivity(intent);
 
     }

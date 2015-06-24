@@ -22,12 +22,20 @@
 <string name ="menu_spot_light">Spot the light</string>
 
 <string name="btn_color">Change lights</string>
-<string name="btn_pref">Preferences</string>
+<string name="btn_pref">Apply_Preferences</string>
 <string name="btn_on">ON</string>
 <string name="btn_off">OFF</string>
 <string name="btn_ok">Ok</string>
 <string name="btn_pushlink">Press the link button on the bridge</string>
 
-<string name ="pref_list">List of settings</string>
+<string name ="name_user">Enter your name</string>
+<string name ="name_pref">Enter the preference name</string>
+
+<string name ="pref_list">chose one preference</string>
+
+<string name="change_color">Lights Configuration</string>
+<string name ="color">Color</string>
+<string name ="contrast">Constrast</string>
+<string name="saturation">Saturation</string>
 
 </resources>

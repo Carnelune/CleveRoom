@@ -194,4 +194,11 @@ public class ListLightActivity extends Activity implements AdapterView.OnItemCli
             intent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(ListLightActivity.this, HomeBridgeActivity.class);
+        startActivity(intent);
+    }
 }

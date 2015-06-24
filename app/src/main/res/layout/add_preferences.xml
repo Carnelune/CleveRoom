@@ -3,10 +3,37 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/pref_list"
+    <EditText
+        android:id ="@+id/name_user"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity ="center"
+        android:hint="@string/name_user"
+        android:inputType="textMultiLine"
+        android:lines="1" />
+    <EditText
+        android:id ="@+id/name_pref"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity ="center"
+        android:layout_below ="@id/name_user"
+        android:hint="@string/name_pref"
+        android:inputType="textMultiLine"
+        android:lines="1" />
+    <Button
+        android:id="@+id/annuler"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:text="@string/pref_list"/>
+        android:layout_height="wrap_content"
+        android:text = "Annuler"
+        android:layout_below ="@id/name_pref"
+        android:layout_marginLeft="25dip"/>
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "OK"
+        android:layout_below ="@id/name_pref"
+        android:layout_toRightOf="@id/annuler"
+        android:layout_marginLeft="25dip"/>
 
 </RelativeLayout>
