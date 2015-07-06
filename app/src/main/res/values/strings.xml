@@ -37,5 +37,6 @@
 <string name ="color">Color</string>
 <string name ="contrast">Constrast</string>
 <string name="saturation">Saturation</string>
+<string name="brightness">Brightness</string>
 
 </resources>

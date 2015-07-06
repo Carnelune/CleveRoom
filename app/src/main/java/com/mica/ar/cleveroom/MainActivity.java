@@ -10,6 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.provider.Telephony;
+import android.util.Log;
+import android.telephony.gsm.SmsMessage;
 
 import com.philips.lighting.hue.listener.PHLightListener;
 import com.philips.lighting.hue.sdk.PHHueSDK;
@@ -98,6 +105,7 @@ public class MainActivity extends Activity {
 
     public void lightOn(String id) {
         PHBridge bridge = phHueSDK.getSelectedBridge();
+
 
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
