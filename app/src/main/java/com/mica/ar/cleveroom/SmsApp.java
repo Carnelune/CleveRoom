@@ -81,7 +81,17 @@ public class SmsApp extends BroadcastReceiver {
                     for (PHLight light : allLights) {
                         if(light.getIdentifier().equals(lampe_id)) {
                             PHLightState lightState = new PHLightState();
+                            //light flashs in green when the user receives an sms
+                            lightState.setHue(28000);
+                            lightState.setOn(true);
                             lightState.setAlertMode(PHLight.PHLightAlertMode.ALERT_LSELECT);
+                            bridge.updateLightState(light, lightState, listener);
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            lightState.setOn(false);
                             bridge.updateLightState(light, lightState, listener);
                         }
                     }

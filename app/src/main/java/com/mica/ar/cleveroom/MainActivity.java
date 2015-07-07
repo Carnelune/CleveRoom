@@ -105,6 +105,7 @@ public class MainActivity extends Activity {
 
     public void lightOn(String id) {
         PHBridge bridge = phHueSDK.getSelectedBridge();
+        int couleur;
 
 
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
@@ -114,6 +115,8 @@ public class MainActivity extends Activity {
                 PHLightState lightState = new PHLightState();
                 lightState.setOn(true);
                 bridge.updateLightState(light, lightState, listener);
+
+
             }
         }
     }
@@ -128,6 +131,7 @@ public class MainActivity extends Activity {
                 PHLightState lightState = new PHLightState();
                 lightState.setOn(false);
                 bridge.updateLightState(light, lightState, listener);
+
             }
         }
     }
@@ -223,26 +227,42 @@ public class MainActivity extends Activity {
         PHBridge bridge = phHueSDK.getSelectedBridge();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
         int i;
+
         for(i=0; i<65280; i=i+6528) {
             for (PHLight light : allLights) {
                 if(light.getIdentifier().equals(lampe_id)){
                     PHLightState lightState = new PHLightState();
+                    if(i==0){
+                        //color_x = lightState.getX();
+                        //color_y = lightState.getY();
+                    }
                     lightState.setOn(true);
-                    bridge.updateLightState(light, lightState, listener);
                     lightState.setHue(i);
+                    lightState.setBrightness(200);
+                    bridge.updateLightState(light, lightState, listener);
+
                 }
 
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             lightOff(lampe_id);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+
+        }
+        for (PHLight light : allLights) {
+            if (light.getIdentifier().equals(lampe_id)) {
+                PHLightState lightState = new PHLightState();
+                lightState.setHue(42900);
+                lightState.setOn(true);
+                bridge.updateLightState(light, lightState, listener);
             }
         }
     }
