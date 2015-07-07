@@ -4,5 +4,6 @@
     <item android:id="@+id/changeName" android:title="@string/menu_change_name"></item>
     <item android:id="@+id/addPref" android:title="@string/menu_add_scene"></item>
     <item android:id="@+id/spotLight" android:title="@string/menu_spot_light"></item>
+    <item android:id="@+id/options" android:title="@string/menu_options"></item>
 
 </menu>
