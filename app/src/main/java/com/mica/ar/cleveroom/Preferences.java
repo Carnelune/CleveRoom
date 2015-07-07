@@ -14,6 +14,7 @@ public class Preferences {
     private static final String LAST_CONNECTED_USERNAME      = "LastConnectedUsername";
     private static final String LAST_CONNECTED_IP            = "LastConnectedIP";
     private static final String LIGHT_CHOSE            = "LastChosenLight";
+    private static final String COCHE_SMS = "true";
     private static Preferences instance = null;
     private SharedPreferences mSharedPreferences = null;
 
@@ -67,5 +68,14 @@ public class Preferences {
     public boolean setLightChose(String idLight){
         mSharedPreferencesEditor.putString(LIGHT_CHOSE, idLight);
         return (mSharedPreferencesEditor.commit());
+    }
+
+    public boolean setSms(Boolean Coche){
+        mSharedPreferencesEditor.putBoolean(COCHE_SMS,Coche);
+        return (mSharedPreferencesEditor.commit());
+    }
+
+    public Boolean getSms(){
+        return mSharedPreferences.getBoolean(COCHE_SMS,true);
     }
 }

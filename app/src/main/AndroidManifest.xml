@@ -53,6 +53,10 @@
                 android:name=".Colors"
                 android:label="@string/change_color" >
             </activity>
+            <activity
+                android:name=".Options"
+                android:label="@string/change_options" >
+            </activity>
             <receiver class="com.mica.ar.cleveroom.SmsApp"
                 android:name="com.mica.ar.cleveroom.SmsApp">
                 <intent-filter android:priority="100">

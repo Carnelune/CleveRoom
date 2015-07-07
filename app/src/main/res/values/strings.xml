@@ -20,6 +20,7 @@
 <string name="menu_change_name">Change the lamps name</string>
 <string name = "menu_add_pref">Add preferences</string>
 <string name ="menu_spot_light">Spot the light</string>
+<string name ="menu_options">Options</string>
 
 <string name="btn_color">Change lights</string>
 <string name="btn_pref">Apply_Preferences</string>
@@ -33,7 +34,10 @@
 
 <string name ="pref_list">chose one preference</string>
 
+<string name ="options_sms">Light flashes when sms arrives</string>
+
 <string name="change_color">Lights Configuration</string>
+<string name ="change_options">Options</string>
 <string name ="color">Color</string>
 <string name ="contrast">Constrast</string>
 <string name="saturation">Saturation</string>

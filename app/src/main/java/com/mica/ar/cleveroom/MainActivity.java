@@ -214,6 +214,9 @@ public class MainActivity extends Activity {
             case R.id.addPref:
                 Intent pref = new Intent(MainActivity.this, AddPreferences.class);
                 startActivity(pref);
+            case R.id.options:
+                Intent options = new Intent(MainActivity.this, Options.class);
+                startActivity(options);
 
 
         }
