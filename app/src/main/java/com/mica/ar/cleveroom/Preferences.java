@@ -6,7 +6,8 @@ import android.content.SharedPreferences;
 import com.philips.lighting.hue.sdk.connection.impl.PHBridgeInternal;
 
 /**
- * THIS FILE IS PROVIDED BY PHILIPS
+ * Preferences of the user
+ *      Selected lamp
  */
 
 public class Preferences {
@@ -16,18 +17,11 @@ public class Preferences {
     private static final String LIGHT_CHOSE            = "LastChosenLight";
     private static Preferences instance = null;
     private SharedPreferences mSharedPreferences = null;
-
     private SharedPreferences.Editor mSharedPreferencesEditor = null;
 
-
-    public void create() {
-
-    }
-
     public static Preferences getInstance(Context ctx) {
-        if (instance == null) {
+        if (instance == null)
             instance = new Preferences(ctx);
-        }
         return instance;
     }
 
@@ -36,12 +30,11 @@ public class Preferences {
         mSharedPreferencesEditor = mSharedPreferences.edit();
     }
 
-
-    public String getUsername() {
+   public String getUsername() {
         String username = mSharedPreferences.getString(LAST_CONNECTED_USERNAME, "");
         if (username==null || username.equals("")) {
             username = PHBridgeInternal.generateUniqueKey();
-            setUsername(username);  // Persist the username in the shared prefs
+            setUsername(username);
         }
         return username;
     }

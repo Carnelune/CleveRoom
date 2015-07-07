@@ -39,12 +39,10 @@ import com.philips.lighting.model.PHHueParsingError;
  *
  */
 public class HomeBridgeActivity extends Activity implements AdapterView.OnItemClickListener {
-
     private PHHueSDK phHueSDK;
     public static final String TAG = "HueMica";
     private Preferences prefs;
     private AccessPointListAdapter adapter;
-
 
     private boolean lastSearchWasIPScan = false;
 
@@ -84,8 +82,7 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
                 WizardAlertDialog.getInstance().showProgressDialog(R.string.connecting, HomeBridgeActivity.this);
                 phHueSDK.connect(lastAccessPoint);
             }
-        }
-        else {  // First time use, so perform a bridge search.
+        } else {  // First time use, so perform a bridge search.
             doBridgeSearch();
         }
     }
@@ -98,10 +95,8 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
         return true;
     }
 
-
     // Local SDK Listener
     private PHSDKListener listener = new PHSDKListener() {
-
         @Override
         public void onAccessPointsFound(List<PHAccessPoint> accessPoint) {
             Log.w(TAG, "Access Points Found. " + accessPoint.size());
@@ -117,15 +112,12 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
                         adapter.updateData(phHueSDK.getAccessPointsFound());
                     }
                 });
-
             }
-
         }
 
         @Override
         public void onCacheUpdated(List<Integer> arg0, PHBridge bridge) {
             Log.w(TAG, "On CacheUpdated");
-
         }
 
         @Override
@@ -144,7 +136,6 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
             Log.w(TAG, "Authentication Required.");
             phHueSDK.startPushlinkAuthentication(accessPoint);
             startActivity(new Intent(HomeBridgeActivity.this, PushLinkActivity.class));
-
         }
 
         @Override
@@ -155,12 +146,10 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
             Log.v(TAG, "onConnectionResumed" + bridge.getResourceCache().getBridgeConfiguration().getIpAddress());
             phHueSDK.getLastHeartbeat().put(bridge.getResourceCache().getBridgeConfiguration().getIpAddress(),  System.currentTimeMillis());
             for (int i = 0; i < phHueSDK.getDisconnectedAccessPoint().size(); i++) {
-
                 if (phHueSDK.getDisconnectedAccessPoint().get(i).getIpAddress().equals(bridge.getResourceCache().getBridgeConfiguration().getIpAddress())) {
                     phHueSDK.getDisconnectedAccessPoint().remove(i);
                 }
             }
-
         }
 
         @Override
@@ -177,11 +166,9 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
 
             if (code == PHHueError.NO_CONNECTION) {
                 Log.w(TAG, "On No Connection");
-            }
-            else if (code == PHHueError.AUTHENTICATION_FAILED || code==1158) {
+            } else if (code == PHHueError.AUTHENTICATION_FAILED || code==1158) {
                 WizardAlertDialog.getInstance().closeProgressDialog();
-            }
-            else if (code == PHHueError.BRIDGE_NOT_RESPONDING) {
+            } else if (code == PHHueError.BRIDGE_NOT_RESPONDING) {
                 Log.w(TAG, "Bridge Not Responding . . . ");
                 WizardAlertDialog.getInstance().closeProgressDialog();
                 HomeBridgeActivity.this.runOnUiThread(new Runnable() {
@@ -190,17 +177,13 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
                         WizardAlertDialog.showErrorDialog(HomeBridgeActivity.this, message, R.string.btn_ok);
                     }
                 });
-
-            }
-            else if (code == PHMessageType.BRIDGE_NOT_FOUND) {
-
+            } else if (code == PHMessageType.BRIDGE_NOT_FOUND) {
                 if (!lastSearchWasIPScan) {  // Perform an IP Scan (backup mechanism) if UPNP and Portal Search fails.
                     phHueSDK = PHHueSDK.getInstance();
                     PHBridgeSearchManager sm = (PHBridgeSearchManager) phHueSDK.getSDKService(PHHueSDK.SEARCH_BRIDGE);
                     sm.search(false, false, true);
                     lastSearchWasIPScan=true;
-                }
-                else {
+                } else {
                     WizardAlertDialog.getInstance().closeProgressDialog();
                     HomeBridgeActivity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -209,8 +192,6 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
                         }
                     });
                 }
-
-
             }
         }
 
@@ -237,7 +218,6 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
         }
         return true;
     }
-
 
     @Override
     public void onDestroy() {
@@ -284,5 +264,4 @@ public class HomeBridgeActivity extends Activity implements AdapterView.OnItemCl
             intent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
         startActivity(intent);
     }
-
 }

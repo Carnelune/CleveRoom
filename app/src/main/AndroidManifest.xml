@@ -1,66 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mica.ar.cleveroom" >
-        <uses-sdk
-            android:minSdkVersion="8"
-            android:targetSdkVersion="17" />
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
 
-        <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-        <uses-permission android:name="android.permission.READ_SMS" />
-        <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS" />
 
-        <application
-            android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
-            <activity
-                android:name=".HomeBridgeActivity"
-                android:label="@string/app_name" >
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".HomeBridgeActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-            </activity>
+        <activity
+            android:name=".ListLightActivity"
+            android:label="@string/app_light">
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/act" >
+        </activity>
+        <activity
+            android:name=".PushLinkActivity"
+            android:label="@string/connecting" >
+        </activity>
+        <activity
+            android:name=".ChangeName"
+            android:label="@string/menu_change_name" >
+        </activity>
+        <activity
+            android:name=".AddScene"
+            android:label="@string/menu_change_name" >
+        </activity>
+        <activity
+            android:name=".ApplyScene"
+            android:label="@string/menu_add_scene" >
+        </activity>
+        <activity
+            android:name=".Colors"
+            android:label="@string/change_color" >
+        </activity>
+        <receiver class="com.mica.ar.cleveroom.SmsApp"
+            android:name="com.mica.ar.cleveroom.SmsApp">
+            <intent-filter android:priority="100">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
 
-            <activity
-                android:name=".ListLightActivity"
-                android:label="@string/app_light">
-            </activity>
-            <activity
-                android:name=".MainActivity"
-                android:label="@string/act" >
-            </activity>
-            <activity
-                android:name=".PushLinkActivity"
-                android:label="@string/verify_bridge" >
-            </activity>
-            <activity
-                android:name=".ChangeName"
-                android:label="@string/menu_change_name" >
-            </activity>
-            <activity
-                android:name=".AddPreferences"
-                android:label="@string/menu_change_name" >
-            </activity>
-            <activity
-                android:name=".ApplyPreferences"
-                android:label="@string/menu_change_name" >
-            </activity>
-            <activity
-                android:name=".Colors"
-                android:label="@string/change_color" >
-            </activity>
-            <receiver class="com.mica.ar.cleveroom.SmsApp"
-                android:name="com.mica.ar.cleveroom.SmsApp">
-                <intent-filter android:priority="100">
-                    <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                </intent-filter>
-            </receiver>
+    </application>
 
-        </application>
-
-    </manifest>
+</manifest>
 

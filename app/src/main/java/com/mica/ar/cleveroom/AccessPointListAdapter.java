@@ -13,9 +13,8 @@ import java.util.List;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 
 /**
- * THIS FILE IS PROVIDED BY PHILIPS
- *
- * Liste des ponts accessibles
+ * List of bridges connected on the network
+ * Bridges are identified by two addresses: MAC and IP
  */
 
 public class AccessPointListAdapter extends BaseAdapter {
@@ -33,9 +32,7 @@ public class AccessPointListAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
-
         BridgeListItem item;
-
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.select_bridge, null);
 
@@ -75,5 +72,4 @@ public class AccessPointListAdapter extends BaseAdapter {
         this.accessPoints = accessPoints;
         notifyDataSetChanged();
     }
-
 }

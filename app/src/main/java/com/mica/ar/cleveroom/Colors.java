@@ -17,6 +17,9 @@ import com.philips.lighting.model.PHLightState;
 import java.util.List;
 import java.util.Map;
 
+/*
+ * Change the 4 settings of the lamp's light
+ */
 public class Colors extends Activity{
     private SeekBar seekBar1;
     private SeekBar seekBar2;
@@ -26,41 +29,39 @@ public class Colors extends Activity{
     private TextView change_saturation;
     private TextView change_contrast;
     private TextView change_brightness;
+
     public static final String TAG = "CleveRoom";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.change_color);
+
         seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
         seekBar2 = (SeekBar) findViewById(R.id.seekBar2);
         seekBar3 = (SeekBar) findViewById(R.id.seekBar3);
         seekBar4 = (SeekBar) findViewById(R.id.seekBar4);
+
         change_color = (TextView) findViewById(R.id.color);
         change_contrast = (TextView) findViewById(R.id.contrast);
         change_saturation = (TextView) findViewById(R.id.saturation);
         change_brightness = (TextView) findViewById(R.id.brightness);
+
         // Initialize the textview with '0'
         change_color.setText(R.string.color);
         change_contrast.setText(R.string.contrast);
         change_saturation.setText(R.string.saturation);
         change_brightness.setText(R.string.brightness);
 
-
+        //Light nuance
         seekBar1.setOnSeekBarChangeListener(
                 new OnSeekBarChangeListener() {
-                    //PHHueSDK phHueSDK;
-                    //PHBridge bridge = phHueSDK.getSelectedBridge();
-                    //List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-
                     int progress = 0;
 
                     PHLightListener listener = new PHLightListener() {
-
                         @Override
-                        public void onSuccess() {
-                        }
+                        public void onSuccess() {                        }
 
                         @Override
                         public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
@@ -68,31 +69,28 @@ public class Colors extends Activity{
                         }
 
                         @Override
-                        public void onError(int arg0, String arg1) {
-                        }
+                        public void onError(int arg0, String arg1) {                        }
 
                         @Override
-                        public void onReceivingLightDetails(PHLight arg0) {
-                        }
+                        public void onReceivingLightDetails(PHLight arg0) {                        }
 
                         @Override
-                        public void onReceivingLights(List<PHBridgeResource> arg0) {
-                        }
+                        public void onReceivingLights(List<PHBridgeResource> arg0) {                        }
 
                         @Override
-                        public void onSearchComplete() {
-                        }
+                        public void onSearchComplete() {                        }
                     };
 
                     @Override
-                    public void onProgressChanged(SeekBar seekBar1,
-                                                  int progresValue, boolean fromUser) {
+                    public void onProgressChanged(SeekBar seekBar1, int progresValue, boolean fromUser) {
                         progress = progresValue;
+
                         PHHueSDK phHueSDK = PHHueSDK.create();
                         PHBridge bridge = phHueSDK.getSelectedBridge();
                         Preferences prefs = Preferences.getInstance(getApplicationContext());
                         final String lampe_id = prefs.getLightChose();
                         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+
                         for (PHLight light : allLights) {
                             if (light.getIdentifier().equals(lampe_id)) {
                                 PHLightState lightState = new PHLightState();
@@ -100,34 +98,24 @@ public class Colors extends Activity{
                                 lightState.setHue(progress-1);
                                 bridge.updateLightState(light, lightState, listener);
                             }
-
                         }
-
-                        }
-
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar1) {
-
                     }
 
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar1) {
+                    public void onStartTrackingTouch(SeekBar seekBar1) {                    }
 
-                    }
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar1) {                    }
                 });
 
+        //Light contrast
         seekBar2.setOnSeekBarChangeListener(
                 new OnSeekBarChangeListener() {
-
-
                     int progress = 0;
 
                     PHLightListener listener = new PHLightListener() {
-
                         @Override
-                        public void onSuccess() {
-                        }
+                        public void onSuccess() {                        }
 
                         @Override
                         public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
@@ -135,31 +123,28 @@ public class Colors extends Activity{
                         }
 
                         @Override
-                        public void onError(int arg0, String arg1) {
-                        }
+                        public void onError(int arg0, String arg1) {                        }
 
                         @Override
-                        public void onReceivingLightDetails(PHLight arg0) {
-                        }
+                        public void onReceivingLightDetails(PHLight arg0) {                        }
 
                         @Override
-                        public void onReceivingLights(List<PHBridgeResource> arg0) {
-                        }
+                        public void onReceivingLights(List<PHBridgeResource> arg0) {                        }
 
                         @Override
-                        public void onSearchComplete() {
-                        }
+                        public void onSearchComplete() {                        }
                     };
 
                     @Override
-                    public void onProgressChanged(SeekBar seekBar2,
-                                                  int progresValue, boolean fromUser) {
+                    public void onProgressChanged(SeekBar seekBar2, int progresValue, boolean fromUser) {
                         progress = progresValue;
+
                         PHHueSDK phHueSDK = PHHueSDK.create();
                         PHBridge bridge = phHueSDK.getSelectedBridge();
                         Preferences prefs = Preferences.getInstance(getApplicationContext());
                         final String lampe_id = prefs.getLightChose();
                         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+
                         for (PHLight light : allLights) {
                             if (light.getIdentifier().equals(lampe_id)) {
                                 PHLightState lightState = new PHLightState();
@@ -167,39 +152,24 @@ public class Colors extends Activity{
                                 lightState.setCt(153 + (progress));
                                 bridge.updateLightState(light, lightState, listener);
                             }
-
                         }
-
                     }
-
 
                     @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-
-                    }
-
-
+                    public void onStartTrackingTouch(SeekBar seekBar) {                    }
 
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-
-
-                    }
+                    public void onStopTrackingTouch(SeekBar seekBar) {                    }
                 });
 
+        //Light saturation
         seekBar3.setOnSeekBarChangeListener(
                 new OnSeekBarChangeListener() {
-
-
                     int progress = 0;
 
                     PHLightListener listener = new PHLightListener() {
-
                         @Override
-                        public void onSuccess() {
-                        }
+                        public void onSuccess() {                        }
 
                         @Override
                         public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
@@ -207,31 +177,28 @@ public class Colors extends Activity{
                         }
 
                         @Override
-                        public void onError(int arg0, String arg1) {
-                        }
+                        public void onError(int arg0, String arg1) {                        }
 
                         @Override
-                        public void onReceivingLightDetails(PHLight arg0) {
-                        }
+                        public void onReceivingLightDetails(PHLight arg0) {                        }
 
                         @Override
-                        public void onReceivingLights(List<PHBridgeResource> arg0) {
-                        }
+                        public void onReceivingLights(List<PHBridgeResource> arg0) {                        }
 
                         @Override
-                        public void onSearchComplete() {
-                        }
+                        public void onSearchComplete() {                        }
                     };
 
                     @Override
-                    public void onProgressChanged(SeekBar seekBar2,
-                                                  int progresValue, boolean fromUser) {
+                    public void onProgressChanged(SeekBar seekBar2, int progresValue, boolean fromUser) {
                         progress = progresValue;
+
                         PHHueSDK phHueSDK = PHHueSDK.create();
                         PHBridge bridge = phHueSDK.getSelectedBridge();
                         Preferences prefs = Preferences.getInstance(getApplicationContext());
                         final String lampe_id = prefs.getLightChose();
                         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+
                         for (PHLight light : allLights) {
                             if (light.getIdentifier().equals(lampe_id)) {
                                 PHLightState lightState = new PHLightState();
@@ -239,36 +206,24 @@ public class Colors extends Activity{
                                 lightState.setSaturation(200 + progress);
                                 bridge.updateLightState(light, lightState, listener);
                             }
-
                         }
-
                     }
-
 
                     @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-
-                    }
-
-
+                    public void onStartTrackingTouch(SeekBar seekBar) {                    }
 
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
+                    public void onStopTrackingTouch(SeekBar seekBar) {                    }
                 });
+
+        //Light brightness
         seekBar4.setOnSeekBarChangeListener(
                 new OnSeekBarChangeListener() {
-
-
                     int progress = 0;
 
                     PHLightListener listener = new PHLightListener() {
-
                         @Override
-                        public void onSuccess() {
-                        }
+                        public void onSuccess() {                        }
 
                         @Override
                         public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
@@ -276,31 +231,28 @@ public class Colors extends Activity{
                         }
 
                         @Override
-                        public void onError(int arg0, String arg1) {
-                        }
+                        public void onError(int arg0, String arg1) {                        }
 
                         @Override
-                        public void onReceivingLightDetails(PHLight arg0) {
-                        }
+                        public void onReceivingLightDetails(PHLight arg0) {                        }
 
                         @Override
-                        public void onReceivingLights(List<PHBridgeResource> arg0) {
-                        }
+                        public void onReceivingLights(List<PHBridgeResource> arg0) {                        }
 
                         @Override
-                        public void onSearchComplete() {
-                        }
+                        public void onSearchComplete() {                        }
                     };
 
                     @Override
-                    public void onProgressChanged(SeekBar seekBar2,
-                                                  int progresValue, boolean fromUser) {
+                    public void onProgressChanged(SeekBar seekBar2, int progresValue, boolean fromUser) {
                         progress = progresValue;
+
                         PHHueSDK phHueSDK = PHHueSDK.create();
                         PHBridge bridge = phHueSDK.getSelectedBridge();
                         Preferences prefs = Preferences.getInstance(getApplicationContext());
                         final String lampe_id = prefs.getLightChose();
                         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+
                         for (PHLight light : allLights) {
                             if (light.getIdentifier().equals(lampe_id)) {
                                 PHLightState lightState = new PHLightState();
@@ -308,30 +260,15 @@ public class Colors extends Activity{
                                 lightState.setBrightness(progress -1);
                                 bridge.updateLightState(light, lightState, listener);
                             }
-
                         }
-
                     }
-
 
                     @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-
-                    }
-
-
+                    public void onStartTrackingTouch(SeekBar seekBar) {                    }
 
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        // Display the value in textview
-
-
-
-
-                    }
+                    public void onStopTrackingTouch(SeekBar seekBar) {                    }
                 });
-
     }
 }
 

@@ -10,18 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.model.PHLight;
 
 
 /**
- * Created by Test on 16/06/2015.
+ * List of lamps connected to the selected bridge
  */
 public class ListLampAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
-    private PHHueSDK phHueSDK;
-    // PHBridge bridge = phHueSDK.getSelectedBridge(); //HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-    // List<PHLight> allLights = bridge.getResourceCache().getAllLights(); //HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     List<PHLight> allLights;
 
     class ListLampItem {
@@ -50,13 +46,15 @@ public class ListLampAdapter extends BaseAdapter {
         item.lampName.setTextColor(Color.BLACK);
         item.lampName.setText(light.getName());
 
-
-        return convertView;}
+        return convertView;
+    }
 
     public int getCount(){ return allLights.size() ;}
+
     public long getItemId(int position) {
         return 0;
     }
+
     public Object getItem(int position) {return allLights.get(position);  }
 
     public void updateData(List<PHLight> allLights) {

@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<string name="app_name">CleveRoom</string>
-<string name="txt_select_bridge">Please select a bridge to use for this app</string>
-<string name="txt_select_light">Please select a light to use for this app</string>
-<string name="find_new_bridge">Find new bridge</string>
-<string name="connecting">Connecting ...</string>
-<string name="search_progress">Searching ...</string>
-<string name="title_error">Error</string>
-<string name="txt_pushlink">Pushlink</string>
-<string name="no_bridge">No Bridge Found.   Start Bridge Search</string>
-<string name="select_bridge">Available Access Points</string>
-<string name="app_light">Available lights</string>
-<string name="act">Main app</string>
-<string name="verify_bridge">Vérification du pont</string>
+    <string name="app_name">CleveRoom</string>
+    <string name="txt_select_bridge">Select a bridge to use for this app</string>
+    <string name="txt_select_light">Select a lamp to use for this app</string>
+    <string name="find_new_bridge">Find new bridge</string>
+    <string name="connecting">Connecting ...</string>
+    <string name="search_progress">Searching ...</string>
+    <string name="title_error">Error</string>
+    <string name="txt_pushlink">Pushlink</string>
+    <string name="no_bridge">No bridge found. Restart bridge search</string>
+    <string name="select_bridge">Available Access Points</string>
+    <string name="app_light">Available Lamps</string>
+    <string name="act">Main activity</string>
+
     <string name="light_name"> </string>
     <string name="light_color"> </string>
 
 
-<string name="menu_change_name">Change the lamps name</string>
-<string name = "menu_add_pref">Add preferences</string>
-<string name ="menu_spot_light">Spot the light</string>
+    <string name="menu_change_name">Change the lamp name</string>
+    <string name="menu_add_scene">Add scene</string>
+    <string name="menu_spot_light">Spot the light</string>
 
-<string name="btn_color">Change lights</string>
-<string name="btn_pref">Apply_Preferences</string>
-<string name="btn_on">ON</string>
-<string name="btn_off">OFF</string>
-<string name="btn_ok">Ok</string>
-<string name="btn_pushlink">Press the link button on the bridge</string>
+    <string name="btn_color">Change light</string>
+    <string name="btn_scene">Apply a scene</string>
+    <string name="btn_on">ON</string>
+    <string name="btn_off">OFF</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_annuler">Cancel</string>
+    <string name="btn_pushlink">Press the link button on the bridge</string>
 
-<string name ="name_user">Enter your name</string>
-<string name ="name_pref">Enter the preference name</string>
+    <string name="name_user">Enter your name</string>
+    <string name="name_scene">Enter the scene name</string>
+    <string name="scene_list">Chose a scene</string>
 
-<string name ="pref_list">chose one preference</string>
-
-<string name="change_color">Lights Configuration</string>
-<string name ="color">Color</string>
-<string name ="contrast">Constrast</string>
-<string name="saturation">Saturation</string>
-<string name="brightness">Brightness</string>
+    <string name="change_color">Light Configuration</string>
+    <string name="color">Color</string>
+    <string name="contrast">Contrast</string>
+    <string name="saturation">Saturation</string>
+    <string name="brightness">Brightness</string>
 
 </resources>

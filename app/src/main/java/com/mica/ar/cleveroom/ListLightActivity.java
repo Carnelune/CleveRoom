@@ -14,7 +14,7 @@ import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.model.PHLight;
 
 /**
- * Created by Test on 16/06/2015.
+ * Allows to select a light
  */
 public class ListLightActivity extends Activity implements AdapterView.OnItemClickListener {
     private PHHueSDK phHueSDK;
@@ -29,27 +29,20 @@ public class ListLightActivity extends Activity implements AdapterView.OnItemCli
         phHueSDK.setAppName("HueMicaApp");
         phHueSDK.setDeviceName(android.os.Build.MODEL);
 
-        // Register the PHSDKListener to receive callbacks from the bridge.
-        //phHueSDK.getNotificationManager().registerSDKListener(listener);
-
         listLights = new ListLampAdapter(getApplicationContext(), phHueSDK.getSelectedBridge().getResourceCache().getAllLights());
-
         ListView lightList = (ListView) findViewById(R.id.light_list);
         lightList.setOnItemClickListener(this);
         lightList.setAdapter(listLights);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.w(TAG, "Inflating home menu");
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
         Preferences prefs = Preferences.getInstance(getApplicationContext());
         PHLight selectedLight = (PHLight) listLights.getItem(position);
         prefs.setLightChose(selectedLight.getIdentifier());
@@ -59,9 +52,6 @@ public class ListLightActivity extends Activity implements AdapterView.OnItemCli
     @Override
     public void onDestroy() {
         super.onDestroy();
-       /* if (listener !=null) {
-            phHueSDK.getNotificationManager().unregisterSDKListener(listener);
-        }*/
         phHueSDK.disableAllHeartbeat();
     }
 
@@ -70,13 +60,12 @@ public class ListLightActivity extends Activity implements AdapterView.OnItemCli
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            intent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
+            intent.addFlags(0x8000);
         startActivity(intent);
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed(){
         Intent intent = new Intent(ListLightActivity.this, HomeBridgeActivity.class);
         startActivity(intent);
     }

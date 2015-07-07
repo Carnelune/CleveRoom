@@ -12,27 +12,27 @@
         android:inputType="textMultiLine"
         android:lines="1" />
     <EditText
-        android:id ="@+id/name_pref"
+        android:id ="@+id/name_scene"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity ="center"
         android:layout_below ="@id/name_user"
-        android:hint="@string/name_pref"
+        android:hint="@string/name_scene"
         android:inputType="textMultiLine"
         android:lines="1" />
     <Button
         android:id="@+id/annuler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text = "Annuler"
-        android:layout_below ="@id/name_pref"
+        android:text = "@string/btn_annuler"
+        android:layout_below ="@id/name_scene"
         android:layout_marginLeft="25dip"/>
     <Button
         android:id="@+id/ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text = "OK"
-        android:layout_below ="@id/name_pref"
+        android:text = "@string/btn_ok"
+        android:layout_below ="@id/name_scene"
         android:layout_toRightOf="@id/annuler"
         android:layout_marginLeft="25dip"/>
 

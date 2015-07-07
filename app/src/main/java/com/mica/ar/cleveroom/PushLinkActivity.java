@@ -16,8 +16,7 @@ import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHHueParsingError;
 
 /**
- * Vérifie qu'on a bien le droit de se ocnnecter au pont
- * Soit qu'on appuye bien sur le bouton du pont
+ * Check bridge connection
  */
 public class PushLinkActivity  extends Activity {
     private ProgressBar pbar;
@@ -96,10 +95,8 @@ public class PushLinkActivity  extends Activity {
                         }
                     });
                 }
-
             }
-
-        } // End of On Error
+        }
 
         @Override
         public void onParsingErrors(List<PHHueParsingError> parsingErrorsList) {}
@@ -112,5 +109,4 @@ public class PushLinkActivity  extends Activity {
             phHueSDK.getNotificationManager().unregisterSDKListener(listener);
         }
     }
-
 }

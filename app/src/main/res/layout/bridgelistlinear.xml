@@ -37,6 +37,4 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#000" />
 
-
-
 </LinearLayout>
