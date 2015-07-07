@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
         TextView t1 = (TextView) findViewById(R.id.lightname);
         t1.setText(lampe);
         TextView t2 = (TextView) findViewById(R.id.lightcolor);
-        t2.setText(String.valueOf(couleur));
+        //t2.setText(String.valueOf(couleur));
         Button onButton;
         onButton = (Button) findViewById(R.id.buttonOn);
         onButton.setOnClickListener(new View.OnClickListener() {
@@ -217,20 +217,44 @@ public class MainActivity extends Activity {
 
     }
 
+
+    public void applyLampStates(int color,int brightness, int saturation){
+        Preferences prefs = Preferences.getInstance(getApplicationContext());
+        final String lampe_id = prefs.getLightChose();
+        PHBridge bridge = phHueSDK.getSelectedBridge();
+        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+
+        for (PHLight light : allLights) {
+            if (light.getIdentifier().equals(lampe_id)) {
+                PHLightState lightState = new PHLightState();
+                lightState.setHue(color);
+                lightState.setBrightness(brightness);
+                lightState.setSaturation(saturation);
+                lightState.setOn(true);
+                bridge.updateLightState(light, lightState, listener);
+            }
+        }
+
+    }
+
     public void doClignoter() {
         Preferences prefs = Preferences.getInstance(getApplicationContext());
         final String lampe_id = prefs.getLightChose();
         PHBridge bridge = phHueSDK.getSelectedBridge();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
         int i;
-
+        int couleur = 0;
+        int brightness = 0;
+        int saturation = 0;
         for(i=0; i<65280; i=i+6528) {
             for (PHLight light : allLights) {
                 if(light.getIdentifier().equals(lampe_id)){
                     PHLightState lightState = new PHLightState();
                     if(i==0){
-                        //color_x = lightState.getX();
-                        //color_y = lightState.getY();
+                        couleur = light.getLastKnownLightState().getHue();
+                        brightness = light.getLastKnownLightState().getBrightness();
+                        saturation = light.getLastKnownLightState().getSaturation();
+
                     }
                     lightState.setOn(true);
                     lightState.setHue(i);
@@ -253,14 +277,7 @@ public class MainActivity extends Activity {
             }
 
         }
-        for (PHLight light : allLights) {
-            if (light.getIdentifier().equals(lampe_id)) {
-                PHLightState lightState = new PHLightState();
-                lightState.setHue(42900);
-                lightState.setOn(true);
-                bridge.updateLightState(light, lightState, listener);
-            }
-        }
+       applyLampStates(couleur, brightness, saturation);
     }
 
     @Override

@@ -39,6 +39,7 @@ public class SmsApp extends BroadcastReceiver {
         {
             Preferences pref = Preferences.getInstance(context);
             if ((intent.getAction().equals(ACTION_RECEIVE_SMS)) && pref.getSms()) {
+
                 Bundle bundle = intent.getExtras();
                 if (bundle != null) {
 
