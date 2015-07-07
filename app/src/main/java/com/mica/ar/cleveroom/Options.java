@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.CheckBox;
 
 /**
- * Created by sarah on 07/07/2015.
+ * Options of the app
  */
 public class Options extends Activity {
     private CheckBox Sms;
@@ -18,7 +18,6 @@ public class Options extends Activity {
         Sms = (CheckBox) findViewById(R.id.options_sms);
         Sms.setText(R.string.options_sms);
         Sms.setOnClickListener(checkedListener);
-
     }
 
     private View.OnClickListener checkedListener = new View.OnClickListener() {
@@ -26,14 +25,10 @@ public class Options extends Activity {
         @Override
         public void onClick(View v) {
             Preferences pref = Preferences.getInstance(getApplicationContext());
-
-            if (((CheckBox) v).isChecked()) {
+            if (((CheckBox) v).isChecked())
                 pref.setSms(true);
-            } else {
+             else
                 pref.setSms(false);
-            }
         }
     };
-
-
 }

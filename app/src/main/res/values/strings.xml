@@ -21,6 +21,7 @@
     <string name="menu_change_name">Change the lamp name</string>
     <string name="menu_add_scene">Add scene</string>
     <string name="menu_spot_light">Spot the light</string>
+    <string name ="menu_options">Options</string>
 
     <string name="btn_color">Change light</string>
     <string name="btn_scene">Apply a scene</string>
@@ -33,6 +34,8 @@
     <string name="name_user">Enter your name</string>
     <string name="name_scene">Enter the scene name</string>
     <string name="scene_list">Chose a scene</string>
+
+    <string name ="options_sms">Light flashes when sms arrives</string>
 
     <string name="change_color">Light Configuration</string>
     <string name="color">Color</string>
