@@ -3,7 +3,6 @@ package com.mica.ar.cleveroom;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -47,9 +46,6 @@ public class Colors extends Activity{
         change_contrast.setText(R.string.contrast);
         change_saturation.setText(R.string.saturation);
         change_brightness.setText(R.string.brightness);
-
-        Preferences prefs = Preferences.getInstance(getApplicationContext());
-        final String lampe_id = prefs.getLightChose();
 
 
         seekBar1.setOnSeekBarChangeListener(
@@ -101,8 +97,8 @@ public class Colors extends Activity{
                             if (light.getIdentifier().equals(lampe_id)) {
                                 PHLightState lightState = new PHLightState();
                                 lightState.setOn(true);
-                                bridge.updateLightState(light, lightState, listener);
                                 lightState.setHue(progress-1);
+                                bridge.updateLightState(light, lightState, listener);
                             }
 
                         }
@@ -168,8 +164,8 @@ public class Colors extends Activity{
                             if (light.getIdentifier().equals(lampe_id)) {
                                 PHLightState lightState = new PHLightState();
                                 lightState.setOn(true);
-                                bridge.updateLightState(light, lightState, listener);
                                 lightState.setCt(153 + (progress));
+                                bridge.updateLightState(light, lightState, listener);
                             }
 
                         }
@@ -240,8 +236,8 @@ public class Colors extends Activity{
                             if (light.getIdentifier().equals(lampe_id)) {
                                 PHLightState lightState = new PHLightState();
                                 lightState.setOn(true);
-                                bridge.updateLightState(light, lightState, listener);
                                 lightState.setSaturation(200 + progress);
+                                bridge.updateLightState(light, lightState, listener);
                             }
 
                         }
@@ -309,8 +305,8 @@ public class Colors extends Activity{
                             if (light.getIdentifier().equals(lampe_id)) {
                                 PHLightState lightState = new PHLightState();
                                 lightState.setOn(true);
-                                bridge.updateLightState(light, lightState, listener);
                                 lightState.setBrightness(progress -1);
+                                bridge.updateLightState(light, lightState, listener);
                             }
 
                         }

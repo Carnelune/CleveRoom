@@ -14,7 +14,8 @@
 <string name="app_light">Available lights</string>
 <string name="act">Main app</string>
 <string name="verify_bridge">Vérification du pont</string>
-<string name="light_name"></string>
+    <string name="light_name"> </string>
+    <string name="light_color"> </string>
 
 
 <string name="menu_change_name">Change the lamps name</string>
