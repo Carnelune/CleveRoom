@@ -67,28 +67,6 @@
         </SeekBar>
 
         <TextView
-            android:id="@+id/contrast"
-            android:text="@string/contrast"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="28dp">
-
-        </TextView>
-
-        <SeekBar
-            android:id="@+id/seekBar2"
-            android:max="347"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="28dp">
-
-
-        </SeekBar>
-
-        <TextView
             android:id="@+id/saturation"
             android:text="@string/saturation"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -101,7 +79,7 @@
 
         <SeekBar
             android:id="@+id/seekBar3"
-            android:max="55"
+            android:max="250"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"

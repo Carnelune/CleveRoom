@@ -195,6 +195,8 @@ public class MainActivity extends Activity {
     }
 
 
+
+
     public void applyLampStates(int color,int brightness, int saturation){
         Preferences prefs = Preferences.getInstance(getApplicationContext());
         final String lampe_id = prefs.getLightChose();
@@ -223,6 +225,8 @@ public class MainActivity extends Activity {
         int couleur = 0;
         int brightness = 0;
         int saturation = 0;
+
+
 
         for(i=0; i<65280; i=i+6528) {
             for (PHLight light : allLights) {
@@ -253,6 +257,8 @@ public class MainActivity extends Activity {
         }
         applyLampStates(couleur, brightness, saturation);
     }
+
+
 
     @Override
     public void onBackPressed(){

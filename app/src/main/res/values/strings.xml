@@ -36,8 +36,10 @@
     <string name="scene_list">Chose a scene</string>
 
     <string name ="options_sms">Light flashes when sms arrives</string>
+    <string name ="options_ok">OK</string>
 
     <string name="change_color">Light Configuration</string>
+    <string name="change_options">Options</string>
     <string name="color">Color</string>
     <string name="contrast">Contrast</string>
     <string name="saturation">Saturation</string>
