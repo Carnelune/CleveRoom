@@ -30,7 +30,6 @@ public class ChangeName extends Activity {
     EditText name = null;
     Button ok = null;
     Button annuler = null;
-    public static final String TAG = "CleveRoom";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +98,7 @@ public class ChangeName extends Activity {
 
         @Override
         public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
-            Log.w(TAG, "Light has updated");
+            Log.w(MainActivity.TAG, "Light has updated");
         }
 
         @Override

@@ -41,11 +41,11 @@
         </activity>
         <activity
             android:name=".AddScene"
-            android:label="@string/menu_change_name" >
+            android:label="@string/menu_add_scene" >
         </activity>
         <activity
             android:name=".ApplyScene"
-            android:label="@string/menu_add_scene" >
+            android:label="@string/btn_scene" >
         </activity>
         <activity
             android:name=".Colors"

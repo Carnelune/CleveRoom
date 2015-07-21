@@ -1,6 +1,7 @@
 package com.mica.ar.cleveroom;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,7 +14,7 @@ import android.widget.Toast;
  * Add the current settings as a new Scene
  */
 public class AddScene extends Activity {
-    EditText name_user = null;
+    public final static String NOM = "com.mica.ar.cleveroom.NOM";
     EditText name_pref = null;
     Button ok = null;
     Button annuler = null;
@@ -21,9 +22,6 @@ public class AddScene extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_scene);
-
-        name_user = (EditText)findViewById(R.id.name_user);
-        name_user.addTextChangedListener(textWatcher);
 
         name_pref = (EditText)findViewById(R.id.name_scene);
         name_pref.addTextChangedListener(textWatcher);
@@ -50,10 +48,16 @@ public class AddScene extends Activity {
         @Override
         public void onClick(View v) {
             String nom = name_pref.getText().toString();
+            if ((nom.equals("")) || nom.length()>32) {
+                Toast.makeText(AddScene.this, "Error name", Toast.LENGTH_SHORT).show();
+            } else {
 
-            //....
+                Intent intent = new Intent(AddScene.this, ApplyScene.class);
+                intent.putExtra(NOM, nom);
 
-            AddScene.this.finish();
+                startActivity(intent);
+            }
+
         }
     };
 
@@ -64,5 +68,10 @@ public class AddScene extends Activity {
             AddScene.this.finish();
         }
     };
+
+    public void onBackPressed(){
+        Intent intent = new Intent(AddScene.this, (MainActivity.class));
+        startActivity(intent);
+    }
 
 }

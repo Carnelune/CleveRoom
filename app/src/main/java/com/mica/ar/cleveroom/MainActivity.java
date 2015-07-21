@@ -177,19 +177,21 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.changeName:
-                Intent intent = new Intent(MainActivity.this, ChangeName.class);
-                startActivity(intent);
-                return true;
-            case R.id.spotLight:
-                doClignoter();
-                return true;
             case R.id.addPref:
                 Intent pref = new Intent(MainActivity.this, AddScene.class);
                 startActivity(pref);
+                break;
+            case R.id.changeName:
+                Intent intent = new Intent(MainActivity.this, ChangeName.class);
+                startActivity(intent);
+                break;
+            case R.id.spotLight:
+                doClignoter();
+                break;
             case R.id.options:
                 Intent options = new Intent(MainActivity.this, Options.class);
                 startActivity(options);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -220,26 +222,18 @@ public class MainActivity extends Activity {
         final String lampe_id = prefs.getLightChose();
         PHBridge bridge = phHueSDK.getSelectedBridge();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-
         int i;
-        int couleur = 0;
-        int brightness = 0;
-        int saturation = 0;
-
-
-
+        int couleur = Preferences.getColor();
+        int brightness = Preferences.getBrightness();
+        int saturation = Preferences.getSaturation();
         for(i=0; i<65280; i=i+6528) {
             for (PHLight light : allLights) {
                 if(light.getIdentifier().equals(lampe_id)){
                     PHLightState lightState = new PHLightState();
-                    if(i==0){
-                        couleur = light.getLastKnownLightState().getHue();
-                        brightness = light.getLastKnownLightState().getBrightness();
-                        saturation = light.getLastKnownLightState().getSaturation();
-                    }
                     lightState.setOn(true);
                     lightState.setHue(i);
                     lightState.setBrightness(200);
+                    lightState.setSaturation(200);
                     bridge.updateLightState(light, lightState, listener);
                 }
             }
