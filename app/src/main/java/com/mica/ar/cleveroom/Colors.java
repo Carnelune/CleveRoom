@@ -1,11 +1,16 @@
 package com.mica.ar.cleveroom;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.philips.lighting.hue.listener.PHLightListener;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.model.PHBridge;
@@ -24,16 +29,14 @@ public class Colors extends Activity{
     private SeekBar seekBar_Color;
     private SeekBar seekBar_Saturation;
     private SeekBar seekBar_Brightness;
-    private SeekBar seekBar_Contrast;
+
 
     private TextView change_color;
     private TextView change_saturation;
     private TextView change_brightness;
-    private TextView change_contrast;
 
-    public int color;
-    public int saturation;
-    public int brightness;
+    private Button add_scene;
+
 
 
     @Override
@@ -45,23 +48,23 @@ public class Colors extends Activity{
         seekBar_Color = (SeekBar) findViewById(R.id.seekBar1);
         seekBar_Saturation = (SeekBar) findViewById(R.id.seekBar3);
         seekBar_Brightness = (SeekBar) findViewById(R.id.seekBar4);
-        //seekBar_Contrast = (SeekBar) findViewById(R.id.seekBar2);
+
 
         change_color = (TextView) findViewById(R.id.color);
         change_saturation = (TextView) findViewById(R.id.saturation);
         change_brightness = (TextView) findViewById(R.id.brightness);
-        //change_contrast = (TextView) findViewById(R.id.contrast);
+
+        add_scene = (Button) findViewById(R.id.add_scene);
+        add_scene.setOnClickListener(add_sceneListener);
 
 
         change_color.setText(R.string.color);
         change_saturation.setText(R.string.saturation);
         change_brightness.setText(R.string.brightness);
-        //change_contrast.setText(R.string.contrast);
 
         seekBar_Color.setProgress(Preferences.getColor());
         seekBar_Saturation.setProgress(Preferences.getSaturation());
         seekBar_Brightness.setProgress(Preferences.getBrightness());
-        //seekBar_Contrast.setProgress(getContrast());
 
         //Light nuance
         seekBar_Color.setOnSeekBarChangeListener(
@@ -165,6 +168,14 @@ public class Colors extends Activity{
                     }
                 });
     }
+
+    private View.OnClickListener add_sceneListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Colors.this, AddScene.class);
+            startActivity(intent);
+        }
+    };
 
     PHLightListener listener = new PHLightListener() {
         @Override

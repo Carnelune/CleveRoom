@@ -25,6 +25,7 @@
 
     <string name="btn_color">Change light</string>
     <string name="btn_scene">Apply a scene</string>
+    <string name="btn_add_scene">Add this scene</string>
     <string name="btn_on">ON</string>
     <string name="btn_off">OFF</string>
     <string name="btn_ok">OK</string>

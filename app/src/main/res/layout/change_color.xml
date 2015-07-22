@@ -87,6 +87,14 @@
 
         </SeekBar>
 
+        <Button
+            android:id="@+id/add_scene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_add_scene"
+            android:layout_marginTop="28dp"
+            android:layout_marginLeft="25dip"/>
+
 
     </LinearLayout>
 

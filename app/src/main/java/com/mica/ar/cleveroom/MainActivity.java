@@ -177,10 +177,7 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.addPref:
-                Intent pref = new Intent(MainActivity.this, AddScene.class);
-                startActivity(pref);
-                break;
+
             case R.id.changeName:
                 Intent intent = new Intent(MainActivity.this, ChangeName.class);
                 startActivity(intent);
@@ -195,9 +192,6 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
     public void applyLampStates(int color,int brightness, int saturation){
         Preferences prefs = Preferences.getInstance(getApplicationContext());
