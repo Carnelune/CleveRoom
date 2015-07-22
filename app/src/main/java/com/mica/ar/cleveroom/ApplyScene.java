@@ -48,19 +48,15 @@ public class ApplyScene extends Activity{
     List<Integer> List_colors = new ArrayList<>();
     String nom;
 
-
-    //List<String> preferences_list = new ArrayList<>();
-
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apply_scene);
         liste = (ListView) findViewById(R.id.listView);
         int nb_scenes;
-        FileOutputStream output = null;
-        FileOutputStream out = null;
-        FileInputStream input = null;
-        ObjectInputStream in = null;
+        FileOutputStream outName= null;
+        FileInputStream inName = null;
+        String test = new String();
 
         if (this.getIntent().getExtras() != null) {
             ajout = true;
@@ -77,76 +73,59 @@ public class ApplyScene extends Activity{
 
             try {
                 // le mode MODE_APPEND fait en sorte de concatener les elements du fichier au lieu de les remplacer
-                output = openFileOutput(LIGHTS, MODE_PRIVATE);
-                output.write(new_scene.getBytes());
+                outName = openFileOutput(LIGHTS, MODE_APPEND);
+                outName.write(new_scene.getBytes());
+                outName.write("\n".getBytes());
+                if(outName != null)
+                    outName.close();
 
-                output.write("\n".getBytes());
-                if(output != null)
-                    output.close();
-
-                out = openFileOutput(COLORS, MODE_PRIVATE);
-
-
-                out.write(Preferences.getBrightness());
-                System.out.println("La luminosite est : " + Preferences.getBrightness());
-                out.write("\n".getBytes());
-                out.write(Preferences.getSaturation());
-                System.out.println("La saturation est : " + Preferences.getSaturation());
-                out.write("\n".getBytes());
-                out.write(Preferences.getColor());
+                OutputStreamWriter outColor = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
+                test = Integer.toString(Preferences.getColor());
+                outColor.write(test + "\n");
                 System.out.println("La couleur est : " + Preferences.getColor());
-                out.write("\n".getBytes());
+                test = Integer.toString(Preferences.getBrightness());
+                outColor.write(test + "\n");
+                System.out.println("La luminosite est : " + Preferences.getBrightness());
+                test = Integer.toString(Preferences.getSaturation());
+                outColor.write(test + "\n");
+                System.out.println("La saturation est : " + Preferences.getSaturation());
 
-                if(out !=null)
-                    out.close();
+
+                if(outColor !=null)
+                    outColor.close();
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
         try {
-            input = openFileInput(LIGHTS);
+            inName = openFileInput(LIGHTS);
             int value;
-            while((value = input.read()) != -1) {
+            while((value = inName.read()) != -1) {
                 StringBuffer lu = new StringBuffer();
                 while((value!= 10)){
-                    //System.out.println(value);
                     lu.append((char)value);
-                    value = input.read();
+                    value = inName.read();
                 }
                 nom = lu.toString();
                 List_name.add(nom);
             }
 
-            if(input != null)
-                input.close();
+            if(inName != null)
+                inName.close();
 
+            InputStream inColor = openFileInput(COLORS);
+            InputStreamReader inputreader = new InputStreamReader(inColor);
+            BufferedReader buffreader = new BufferedReader(inputreader);
 
-            System.out.println("Je vais ouvrir le fichier");
-            in = new ObjectInputStream(new FileInputStream(COLORS));
-            System.out.println("fichier ouvert");
-            long v;
-            while((v = in.readLong()) != -1) {
-                //StringBuffer lu = new StringBuffer();
-                while((v!= 10)){
-                    System.out.println("v vaut: " + v);
-                    //lu.append(v);
-                    //lu.append((Long) v);
-                    //System.out.println("lu vaut: " + lu);
-                    //number = Long.parseLong(lu.toString());
-                    v = in.read();
-                }
-                //System.out.println(number);
-                //v = in.read();
-
-                //List_colors.add(number);
-                //System.out.println(number);
+            String line;
+            while (( line = buffreader.readLine()) != null) {
+                List_colors.add(Integer.parseInt(line));
+                System.out.println(Integer.parseInt(line));
             }
-            if(in != null)
-                in.close();
+            inColor.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -164,7 +143,7 @@ public class ApplyScene extends Activity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                applyLampStates(Preferences.getList(position + 2 * position), Preferences.getList(position + 2 * position + 1), Preferences.getList(position + 2 * position + 2));
+                applyLampStates(List_colors.get(position + 2 * position), List_colors.get(position + 2 * position + 1), List_colors.get(position + 2 * position + 2));
 
             }
         });
@@ -216,91 +195,18 @@ public class ApplyScene extends Activity{
         startActivity(intent);
     }
 
-    public static void ecrireFichierI(File dir,String nomFichier, String monText) {
 
-        BufferedWriter writer = null;
+    public byte[] toBytes(int i)
+    {
+        byte[] result = new byte[4];
 
-        try {
+        result[0] = (byte) (i >> 24);
+        result[1] = (byte) (i >> 16);
+        result[2] = (byte) (i >> 8);
+        result[3] = (byte) (i /*>> 0*/);
 
-            File newfile = new File(dir.getAbsolutePath() + File.separator + nomFichier);
-
-            newfile.createNewFile();
-            writer = new BufferedWriter(new OutputStreamWriter( new FileOutputStream(newfile)));
-            writer.write(monText);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        } finally {
-
-            if (writer != null) {
-
-                try {
-
-                    writer.close();
-
-                } catch (IOException e) {
-
-                    e.printStackTrace();
-
-                }
-            }
-        }
+        return result;
     }
 
-
-    public static String lireFichierI(File dir, String nomFichier) {
-
-        File newfile = new File(dir.getAbsolutePath() + File.separator + nomFichier);
-
-        String monText = "";
-
-        BufferedReader input = null;
-
-        try {
-
-            input = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(newfile)
-
-            ));
-
-            String line;
-
-            StringBuffer buffer = new StringBuffer();
-
-            while ((line = input.readLine()) != null) {
-
-                buffer.append(line);
-
-            }
-
-            monText = buffer.toString();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        } finally {
-
-            if (input != null) {
-
-                try {
-
-                    input.close();
-
-                } catch (IOException e) {
-
-                    e.printStackTrace();
-
-                }
-
-            }
-
-        }
-
-        return monText;
-
-    }
 
 }
