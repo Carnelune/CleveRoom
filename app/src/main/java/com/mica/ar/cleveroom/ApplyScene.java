@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.philips.lighting.hue.listener.PHLightListener;
 import com.philips.lighting.hue.sdk.PHHueSDK;
@@ -82,13 +86,10 @@ public class ApplyScene extends Activity{
                 OutputStreamWriter outColor = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
                 test = Integer.toString(Preferences.getColor());
                 outColor.write(test + "\n");
-                System.out.println("La couleur est : " + Preferences.getColor());
                 test = Integer.toString(Preferences.getBrightness());
                 outColor.write(test + "\n");
-                System.out.println("La luminosite est : " + Preferences.getBrightness());
                 test = Integer.toString(Preferences.getSaturation());
                 outColor.write(test + "\n");
-                System.out.println("La saturation est : " + Preferences.getSaturation());
 
 
                 if(outColor !=null)
@@ -110,6 +111,7 @@ public class ApplyScene extends Activity{
                     value = inName.read();
                 }
                 nom = lu.toString();
+                //System.out.println(nom);
                 List_name.add(nom);
             }
 
@@ -123,7 +125,7 @@ public class ApplyScene extends Activity{
             String line;
             while (( line = buffreader.readLine()) != null) {
                 List_colors.add(Integer.parseInt(line));
-                System.out.println(Integer.parseInt(line));
+                //System.out.println(Integer.parseInt(line));
             }
             inColor.close();
 
@@ -134,7 +136,7 @@ public class ApplyScene extends Activity{
         }
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
         liste.setAdapter(adapter);
 
         liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -144,7 +146,149 @@ public class ApplyScene extends Activity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 applyLampStates(List_colors.get(position + 2 * position), List_colors.get(position + 2 * position + 1), List_colors.get(position + 2 * position + 2));
+                int i =0;
+            }
+        });
 
+        liste.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View v,
+                                           int position, long arg3) {
+                System.out.println("La position est a : " + position);
+                try {
+                    FileOutputStream outName2 = openFileOutput(LIGHTS, MODE_PRIVATE);
+                    OutputStreamWriter outColor2 = new OutputStreamWriter(openFileOutput(COLORS, MODE_PRIVATE));
+                    String test2;
+                    if(position==0 && List_name.size()==1){
+                        System.out.println("JE suis dans le premier if");
+                        outName2.write("".getBytes());
+                        outName2.close();
+                        outColor2.write("");
+                        outColor2.close();
+                        adapter.notifyDataSetChanged();
+                    }
+                    else if(position==0 && List_name.size()>1){
+                        System.out.println("JE suis dans le second if");
+                        outName2.write(List_name.get(1).getBytes());
+                        outName2.write("\n".getBytes());
+                        outName2.close();
+                        test2 = Integer.toString(List_colors.get(3));
+                        outColor2.write(test2 + "\n");
+                        test2 = Integer.toString(List_colors.get(4));
+                        outColor2.write(test2 + "\n");
+                        test2 = Integer.toString(List_colors.get(5));
+                        outColor2.write(test2 + "\n");
+                        outColor2.close();
+                        FileOutputStream outName3 = openFileOutput(LIGHTS, MODE_APPEND);
+                        OutputStreamWriter outColor3 = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
+                        String test3;
+                        int i = 2;
+                        while(i<List_name.size()){
+                            outName3.write(List_name.get(i).getBytes());
+                            outName3.write("\n".getBytes());
+                            test3 = Integer.toString(List_colors.get(3*i));
+                            outColor3.write(test3 + "\n");
+                            test3 = Integer.toString(List_colors.get(3*i + 1));
+                            outColor3.write(test3 + "\n");
+                            test3 = Integer.toString(List_colors.get(3*i + 2));
+                            outColor3.write(test3 + "\n");
+                            i++;
+                        }
+                        outName3.close();
+                        outColor3.close();
+                        adapter.notifyDataSetChanged();
+                    }
+                    else if(position<List_name.size() - 1){
+                        System.out.println("JE suis dans le troisieme if");
+                        outName2.write(List_name.get(0).getBytes());
+                        outName2.write("\n".getBytes());
+                        outName2.close();
+                        test2 = Integer.toString(List_colors.get(0));
+                        outColor2.write(test2 + "\n");
+                        test2 = Integer.toString(List_colors.get(1));
+                        outColor2.write(test2 + "\n");
+                        test2 = Integer.toString(List_colors.get(2));
+                        outColor2.write(test2 + "\n");
+                        outColor2.close();
+                        FileOutputStream outName3 = openFileOutput(LIGHTS, MODE_APPEND);
+                        OutputStreamWriter outColor3 = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
+                        String test3;
+                        int i = 1;
+                        while(i<List_name.size()){
+                            if(i==position){
+                                System.out.println("JE suis dans le quatrieme if");
+                                outName3.write("".getBytes());
+                                outName3.close();
+                                outColor3.write("");
+                                outColor3.close();
+                                adapter.notifyDataSetChanged();
+                            }
+                            else{
+                                System.out.println("JE suis dans le cinquieme if");
+                                outName3.write(List_name.get(i).getBytes());
+                                outName3.write("\n".getBytes());
+                                test3 = Integer.toString(List_colors.get(3*i));
+                                outColor3.write(test3 + "\n");
+                                test3 = Integer.toString(List_colors.get(3*i + 1));
+                                outColor3.write(test3 + "\n");
+                                test3 = Integer.toString(List_colors.get(3*i + 2));
+                                outColor3.write(test3 + "\n");
+
+                                i++;
+                            }
+                        }
+                        outName3.close();
+                        outColor3.close();
+                        adapter.notifyDataSetChanged();
+                    }
+                    else if(position==List_name.size() - 1){
+                        System.out.println("JE suis dans le sixieme if");
+                        outName2.write(List_name.get(0).getBytes());
+                        outName2.write("\n".getBytes());
+                        outName2.close();
+                        test2 = Integer.toString(List_colors.get(0));
+                        outColor2.write(test2 + "\n");
+                        test2 = Integer.toString(List_colors.get(1));
+                        outColor2.write(test2 + "\n");
+                        test2 = Integer.toString(List_colors.get(2));
+                        outColor2.write(test2 + "\n");
+                        outColor2.close();
+                        FileOutputStream outName3 = openFileOutput(LIGHTS, MODE_APPEND);
+                        OutputStreamWriter outColor3 = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
+                        String test3;
+                        int i = 1;
+                        while(i<List_name.size()-1){
+                            outName3.write(List_name.get(i).getBytes());
+                            outName3.write("\n".getBytes());
+                            test3 = Integer.toString(List_colors.get(3*i));
+                            outColor3.write(test3 + "\n");
+                            test3 = Integer.toString(List_colors.get(3*i + 1));
+                            outColor3.write(test3 + "\n");
+                            test3 = Integer.toString(List_colors.get(3*i + 2));
+                            outColor3.write(test3 + "\n");
+                            i++;
+                        }
+                        System.out.println("i et position sont les memes " + i + position);
+                        outName3.write("".getBytes());
+                        outName3.close();
+                        outColor3.write("");
+                        outColor3.close();
+                        adapter.notifyDataSetChanged();;
+                    }
+
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                List_name.remove(List_name.get(position));
+                List_colors.remove(List_colors.get(3* position));
+                List_colors.remove(List_colors.get(3*position ));
+                List_colors.remove(List_colors.get(3* position));
+                adapter.notifyDataSetChanged();
+                return false;
             }
         });
     }
@@ -167,6 +311,7 @@ public class ApplyScene extends Activity{
             }
         }
     }
+
 
     PHLightListener listener = new PHLightListener() {
         @Override
@@ -196,16 +341,32 @@ public class ApplyScene extends Activity{
     }
 
 
-    public byte[] toBytes(int i)
-    {
-        byte[] result = new byte[4];
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_apply_scene, menu);
+    }
 
-        result[0] = (byte) (i >> 24);
-        result[1] = (byte) (i >> 16);
-        result[2] = (byte) (i >> 8);
-        result[3] = (byte) (i /*>> 0*/);
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.edit:
 
-        return result;
+
+                return true;
+
+            case R.id.delete:
+                deleteItem(info.id);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void deleteItem(long id) {
+        List_name.remove(id);
     }
 
 

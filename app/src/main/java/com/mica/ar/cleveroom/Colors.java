@@ -36,6 +36,7 @@ public class Colors extends Activity{
     private TextView change_brightness;
 
     private Button add_scene;
+    private Button OK;
 
 
 
@@ -56,6 +57,9 @@ public class Colors extends Activity{
 
         add_scene = (Button) findViewById(R.id.add_scene);
         add_scene.setOnClickListener(add_sceneListener);
+
+        OK = (Button) findViewById(R.id.OK);
+        OK.setOnClickListener(OKListener);
 
 
         change_color.setText(R.string.color);
@@ -168,6 +172,13 @@ public class Colors extends Activity{
                     }
                 });
     }
+
+    private View.OnClickListener OKListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Colors.this.finish();
+        }
+    };
 
     private View.OnClickListener add_sceneListener = new View.OnClickListener() {
         @Override

@@ -22,7 +22,8 @@
     <string name="menu_add_scene">Add scene</string>
     <string name="menu_spot_light">Spot the light</string>
     <string name ="menu_options">Options</string>
-
+    <string name="menu_delete">Delete this scene</string>
+    <string name="menu_edit">Rename this scene</string>
     <string name="btn_color">Change light</string>
     <string name="btn_scene">Apply a scene</string>
     <string name="btn_add_scene">Add this scene</string>
