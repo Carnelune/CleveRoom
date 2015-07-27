@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
@@ -52,6 +55,7 @@ public class ApplyScene extends Activity{
     final String COLORS = "Lights_configuration.txt";
     List<String> List_name = new ArrayList<>();
     List<Integer> List_colors = new ArrayList<>();
+    ArrayAdapter<String> adapter = null;
     String nom;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -138,8 +142,9 @@ public class ApplyScene extends Activity{
         }
 
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
         liste.setAdapter(adapter);
+        registerForContextMenu(liste);
 
         liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -147,72 +152,21 @@ public class ApplyScene extends Activity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                applyLampStates(List_colors.get(position + 2 * position), List_colors.get(position + 2 * position + 1), List_colors.get(position + 2 * position + 2));
-                int i =0;
-            }
+                applyLampStates(List_colors.get(3 * position), List_colors.get(3*position + 1), List_colors.get(3* position + 2));
+                      }
         });
 
-        liste.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+      /*  liste.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int position, long arg3) {
-
-                try {
-                    List_name.remove(List_name.get(position));
-                    List_colors.remove(List_colors.get(3* position));
-                    List_colors.remove(List_colors.get(3*position ));
-                    List_colors.remove(List_colors.get(3* position));
-                    adapter.notifyDataSetChanged();
-                    FileOutputStream outName2 = openFileOutput(LIGHTS, MODE_PRIVATE);
-                    OutputStreamWriter outColor2 = new OutputStreamWriter(openFileOutput(COLORS, MODE_PRIVATE));
-                    String test2;
-                    if(List_name.size()==0){
-                        outName2.write("".getBytes());
-                        outName2.close();
-                        outColor2.write("");
-                        outColor2.close();
-                        adapter.notifyDataSetChanged();
-                    }
-                    else{
-                        outName2.write(List_name.get(0).getBytes());
-                        outName2.write("\n".getBytes());
-                        outName2.close();
-                        test2 = Integer.toString(List_colors.get(0));
-                        outColor2.write(test2 + "\n");
-                        test2 = Integer.toString(List_colors.get(1));
-                        outColor2.write(test2 + "\n");
-                        test2 = Integer.toString(List_colors.get(2));
-                        outColor2.write(test2 + "\n");
-                        outColor2.close();
-                        FileOutputStream outName3 = openFileOutput(LIGHTS, MODE_APPEND);
-                        OutputStreamWriter outColor3 = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
-                        String test3;
-                        int i = 1;
-                        while(i<List_name.size()){
-                            outName3.write(List_name.get(i).getBytes());
-                            outName3.write("\n".getBytes());
-                            test3 = Integer.toString(List_colors.get(3*i));
-                            outColor3.write(test3 + "\n");
-                            test3 = Integer.toString(List_colors.get(3*i + 1));
-                            outColor3.write(test3 + "\n");
-                            test3 = Integer.toString(List_colors.get(3*i + 2));
-                            outColor3.write(test3 + "\n");
-                            i++;
-                        }
-                        outName3.close();
-                        outColor3.close();
-                        adapter.notifyDataSetChanged();
-                    }
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                delete(position);
+                adapter.notifyDataSetChanged();
 
                 return false;
             }
-        });
+        });*/
     }
 
     private void applyLampStates(int color, int brightness, int saturation) {
@@ -232,6 +186,66 @@ public class ApplyScene extends Activity{
                 bridge.updateLightState(light, lightState, listener);
             }
         }
+    }
+
+    private void delete(int position){
+        try {
+            List_name.remove(List_name.get(position));
+            List_colors.remove(List_colors.get(3* position));
+            List_colors.remove(List_colors.get(3*position ));
+            List_colors.remove(List_colors.get(3* position));
+            //adapter.notifyDataSetChanged();
+            FileOutputStream outName2 = openFileOutput(LIGHTS, MODE_PRIVATE);
+            OutputStreamWriter outColor2 = new OutputStreamWriter(openFileOutput(COLORS, MODE_PRIVATE));
+            String test2;
+            if(List_name.size()==0){
+                outName2.write("".getBytes());
+                outName2.close();
+                outColor2.write("");
+                outColor2.close();
+                //adapter.notifyDataSetChanged();
+            }
+            else{
+                outName2.write(List_name.get(0).getBytes());
+                outName2.write("\n".getBytes());
+                outName2.close();
+                test2 = Integer.toString(List_colors.get(0));
+                outColor2.write(test2 + "\n");
+                test2 = Integer.toString(List_colors.get(1));
+                outColor2.write(test2 + "\n");
+                test2 = Integer.toString(List_colors.get(2));
+                outColor2.write(test2 + "\n");
+                outColor2.close();
+                FileOutputStream outName3 = openFileOutput(LIGHTS, MODE_APPEND);
+                OutputStreamWriter outColor3 = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
+                String test3;
+                int i = 1;
+                while(i<List_name.size()){
+                    outName3.write(List_name.get(i).getBytes());
+                    outName3.write("\n".getBytes());
+                    test3 = Integer.toString(List_colors.get(3*i));
+                    outColor3.write(test3 + "\n");
+                    test3 = Integer.toString(List_colors.get(3*i + 1));
+                    outColor3.write(test3 + "\n");
+                    test3 = Integer.toString(List_colors.get(3*i + 2));
+                    outColor3.write(test3 + "\n");
+                    i++;
+                }
+                outName3.close();
+                outColor3.close();
+                //adapter.notifyDataSetChanged();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void rename(int position, String new_name){
+        List_name.set(position, new_name);
     }
 
 
@@ -257,34 +271,28 @@ public class ApplyScene extends Activity{
         public void onSearchComplete() {                        }
     };
 
-    public void onBackPressed(){
-        Intent intent = new Intent(ApplyScene.this, (MainActivity.class));
-        startActivity(intent);
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_apply_scene, menu);
     }
 
-
     @Override
-
-
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
-            case R.id.edit:
-
-
-                return true;
-
             case R.id.delete:
-                deleteItem(info.id);
+                delete((int)info.id);
+                adapter.notifyDataSetChanged();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    private void deleteItem(long id) {
-        List_name.remove(id);
+    public void onBackPressed(){
+        Intent intent = new Intent(ApplyScene.this, (MainActivity.class));
+        startActivity(intent);
     }
-
-
 }
