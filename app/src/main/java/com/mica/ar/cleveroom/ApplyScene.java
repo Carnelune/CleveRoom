@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.Toast;
 
 import com.philips.lighting.hue.listener.PHLightListener;
@@ -154,52 +156,24 @@ public class ApplyScene extends Activity{
 
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int position, long arg3) {
-                System.out.println("La position est a : " + position);
+
                 try {
+                    List_name.remove(List_name.get(position));
+                    List_colors.remove(List_colors.get(3* position));
+                    List_colors.remove(List_colors.get(3*position ));
+                    List_colors.remove(List_colors.get(3* position));
+                    adapter.notifyDataSetChanged();
                     FileOutputStream outName2 = openFileOutput(LIGHTS, MODE_PRIVATE);
                     OutputStreamWriter outColor2 = new OutputStreamWriter(openFileOutput(COLORS, MODE_PRIVATE));
                     String test2;
-                    if(position==0 && List_name.size()==1){
-                        System.out.println("JE suis dans le premier if");
+                    if(List_name.size()==0){
                         outName2.write("".getBytes());
                         outName2.close();
                         outColor2.write("");
                         outColor2.close();
                         adapter.notifyDataSetChanged();
                     }
-                    else if(position==0 && List_name.size()>1){
-                        System.out.println("JE suis dans le second if");
-                        outName2.write(List_name.get(1).getBytes());
-                        outName2.write("\n".getBytes());
-                        outName2.close();
-                        test2 = Integer.toString(List_colors.get(3));
-                        outColor2.write(test2 + "\n");
-                        test2 = Integer.toString(List_colors.get(4));
-                        outColor2.write(test2 + "\n");
-                        test2 = Integer.toString(List_colors.get(5));
-                        outColor2.write(test2 + "\n");
-                        outColor2.close();
-                        FileOutputStream outName3 = openFileOutput(LIGHTS, MODE_APPEND);
-                        OutputStreamWriter outColor3 = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
-                        String test3;
-                        int i = 2;
-                        while(i<List_name.size()){
-                            outName3.write(List_name.get(i).getBytes());
-                            outName3.write("\n".getBytes());
-                            test3 = Integer.toString(List_colors.get(3*i));
-                            outColor3.write(test3 + "\n");
-                            test3 = Integer.toString(List_colors.get(3*i + 1));
-                            outColor3.write(test3 + "\n");
-                            test3 = Integer.toString(List_colors.get(3*i + 2));
-                            outColor3.write(test3 + "\n");
-                            i++;
-                        }
-                        outName3.close();
-                        outColor3.close();
-                        adapter.notifyDataSetChanged();
-                    }
-                    else if(position<List_name.size() - 1){
-                        System.out.println("JE suis dans le troisieme if");
+                    else{
                         outName2.write(List_name.get(0).getBytes());
                         outName2.write("\n".getBytes());
                         outName2.close();
@@ -215,49 +189,6 @@ public class ApplyScene extends Activity{
                         String test3;
                         int i = 1;
                         while(i<List_name.size()){
-                            if(i==position){
-                                System.out.println("JE suis dans le quatrieme if");
-                                outName3.write("".getBytes());
-                                outName3.close();
-                                outColor3.write("");
-                                outColor3.close();
-                                adapter.notifyDataSetChanged();
-                            }
-                            else{
-                                System.out.println("JE suis dans le cinquieme if");
-                                outName3.write(List_name.get(i).getBytes());
-                                outName3.write("\n".getBytes());
-                                test3 = Integer.toString(List_colors.get(3*i));
-                                outColor3.write(test3 + "\n");
-                                test3 = Integer.toString(List_colors.get(3*i + 1));
-                                outColor3.write(test3 + "\n");
-                                test3 = Integer.toString(List_colors.get(3*i + 2));
-                                outColor3.write(test3 + "\n");
-
-                                i++;
-                            }
-                        }
-                        outName3.close();
-                        outColor3.close();
-                        adapter.notifyDataSetChanged();
-                    }
-                    else if(position==List_name.size() - 1){
-                        System.out.println("JE suis dans le sixieme if");
-                        outName2.write(List_name.get(0).getBytes());
-                        outName2.write("\n".getBytes());
-                        outName2.close();
-                        test2 = Integer.toString(List_colors.get(0));
-                        outColor2.write(test2 + "\n");
-                        test2 = Integer.toString(List_colors.get(1));
-                        outColor2.write(test2 + "\n");
-                        test2 = Integer.toString(List_colors.get(2));
-                        outColor2.write(test2 + "\n");
-                        outColor2.close();
-                        FileOutputStream outName3 = openFileOutput(LIGHTS, MODE_APPEND);
-                        OutputStreamWriter outColor3 = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
-                        String test3;
-                        int i = 1;
-                        while(i<List_name.size()-1){
                             outName3.write(List_name.get(i).getBytes());
                             outName3.write("\n".getBytes());
                             test3 = Integer.toString(List_colors.get(3*i));
@@ -268,14 +199,10 @@ public class ApplyScene extends Activity{
                             outColor3.write(test3 + "\n");
                             i++;
                         }
-                        System.out.println("i et position sont les memes " + i + position);
-                        outName3.write("".getBytes());
                         outName3.close();
-                        outColor3.write("");
                         outColor3.close();
-                        adapter.notifyDataSetChanged();;
+                        adapter.notifyDataSetChanged();
                     }
-
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -283,11 +210,6 @@ public class ApplyScene extends Activity{
                     e.printStackTrace();
                 }
 
-                List_name.remove(List_name.get(position));
-                List_colors.remove(List_colors.get(3* position));
-                List_colors.remove(List_colors.get(3*position ));
-                List_colors.remove(List_colors.get(3* position));
-                adapter.notifyDataSetChanged();
                 return false;
             }
         });
@@ -342,12 +264,7 @@ public class ApplyScene extends Activity{
 
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_apply_scene, menu);
-    }
+
 
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
