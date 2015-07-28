@@ -32,11 +32,11 @@ public class SmsApp extends BroadcastReceiver {
 
     @Override
     public void onReceive (Context context, Intent intent)  {
-        Preferences pref = Preferences.getInstance(context);
+        Preferences prefs = Preferences.getInstance(context);
         int color = Preferences.getColor();
         int saturation = Preferences.getSaturation();
         int brightness = Preferences.getBrightness();
-        if ((intent.getAction().equals(ACTION_RECEIVE_SMS)) && pref.getSms()) {
+        if ((intent.getAction().equals(ACTION_RECEIVE_SMS)) && prefs.getSms()) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 PHLightListener listener = new PHLightListener() {
@@ -64,7 +64,6 @@ public class SmsApp extends BroadcastReceiver {
                 PHHueSDK phHueSDK;
                 phHueSDK = PHHueSDK.create();
                 PHBridge bridge = phHueSDK.getSelectedBridge();
-                Preferences prefs = Preferences.getInstance(context);
                 String lampe_id = prefs.getLightChose();
                 List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
@@ -86,43 +85,7 @@ public class SmsApp extends BroadcastReceiver {
                     }
                 }
             }
-            Preferences prefs = Preferences.getInstance(context);
-            final String lampe_id = prefs.getLightChose();
-            PHBridge bridge = phHueSDK.getSelectedBridge();
-            List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-
-            for (PHLight light : allLights) {
-                if (light.getIdentifier().equals(lampe_id)) {
-                    PHLightState lightState = new PHLightState();
-                    lightState.setHue(color);
-                    lightState.setBrightness(brightness);
-                    lightState.setSaturation(saturation);
-                    lightState.setOn(true);
-                    bridge.updateLightState(light, lightState, listener);
-                }
-            }
+            Preferences.applyLampStates(color,brightness,saturation);
         }
     }
-
-    PHLightListener listener = new PHLightListener() {
-        @Override
-        public void onSuccess() {        }
-
-        @Override
-        public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
-            Log.w(MainActivity.TAG, "Light has updated");
-        }
-
-        @Override
-        public void onError(int arg0, String arg1) {        }
-
-        @Override
-        public void onReceivingLightDetails(PHLight arg0) {        }
-
-        @Override
-        public void onReceivingLights(List<PHBridgeResource> arg0) {        }
-
-        @Override
-        public void onSearchComplete() {        }
-    };
 }

@@ -63,129 +63,97 @@ public class ApplyScene extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apply_scene);
         liste = (ListView) findViewById(R.id.listView);
-        int nb_scenes;
         FileOutputStream outName= null;
         FileInputStream inName = null;
         String test = new String();
-
-        if (this.getIntent().getExtras() != null) {
-            ajout = true;
-            Intent i = getIntent();
-            String new_scene = i.getStringExtra(AddScene.NOM);
-            Preferences.IncrementerNbScenes();
-            nb_scenes = Preferences.getNbScenes();
-            Preferences.addList(new_scene);
-            //Preferences.addList(nb_scenes);
-
-            Preferences.addList(Preferences.getColor());
-            Preferences.addList(Preferences.getBrightness());
-            Preferences.addList(Preferences.getSaturation());
-
-            try {
-                // le mode MODE_APPEND fait en sorte de concatener les elements du fichier au lieu de les remplacer
-                outName = openFileOutput(LIGHTS, MODE_APPEND);
-                outName.write(new_scene.getBytes());
-                outName.write("\n".getBytes());
-                if(outName != null)
-                    outName.close();
-
-                OutputStreamWriter outColor = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
-                test = Integer.toString(Preferences.getColor());
-                outColor.write(test + "\n");
-                test = Integer.toString(Preferences.getBrightness());
-                outColor.write(test + "\n");
-                test = Integer.toString(Preferences.getSaturation());
-                outColor.write(test + "\n");
-
-
-                if(outColor !=null)
-                    outColor.close();
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            inName = openFileInput(LIGHTS);
-            int value;
-            while((value = inName.read()) != -1) {
-                StringBuffer lu = new StringBuffer();
-                while((value!= 10)){
-                    lu.append((char)value);
-                    value = inName.read();
-                }
-                nom = lu.toString();
-                //System.out.println(nom);
-                List_name.add(nom);
-            }
-
-            if(inName != null)
-                inName.close();
-
-            InputStream inColor = openFileInput(COLORS);
-            InputStreamReader inputreader = new InputStreamReader(inColor);
-            BufferedReader buffreader = new BufferedReader(inputreader);
-
-            String line;
-            while (( line = buffreader.readLine()) != null) {
-                List_colors.add(Integer.parseInt(line));
-                //System.out.println(Integer.parseInt(line));
-            }
-            inColor.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
-        liste.setAdapter(adapter);
-        registerForContextMenu(liste);
-
-        liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            //int i = 0;
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                applyLampStates(List_colors.get(3 * position), List_colors.get(3*position + 1), List_colors.get(3* position + 2));
-                      }
-        });
-
-
-      /*  liste.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            public boolean onItemLongClick(AdapterView<?> arg0, View v,
-                                           int position, long arg3) {
-                delete(position);
-                adapter.notifyDataSetChanged();
-
-                return false;
-            }
-        });*/
-    }
-
-    private void applyLampStates(int color, int brightness, int saturation) {
-        Preferences prefs = Preferences.getInstance(getApplicationContext());
-        final String lampe_id = prefs.getLightChose();
-        PHHueSDK phHueSDK = PHHueSDK.create();
+        PHHueSDK phHueSDK;
+        phHueSDK = PHHueSDK.create();
         PHBridge bridge = phHueSDK.getSelectedBridge();
+        Preferences prefs = Preferences.getInstance(getApplicationContext());
+        String lampe_id = prefs.getLightChose();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-
         for (PHLight light : allLights) {
             if (light.getIdentifier().equals(lampe_id)) {
-                PHLightState lightState = new PHLightState();
-                lightState.setHue(color);
-                lightState.setBrightness(brightness);
-                lightState.setSaturation(saturation);
-                lightState.setOn(true);
-                bridge.updateLightState(light, lightState, listener);
+
+                if (this.getIntent().getExtras() != null) {
+                    ajout = true;
+                    Intent i = getIntent();
+                    String new_scene = i.getStringExtra(AddScene.NOM);
+
+                    try {
+                        // le mode MODE_APPEND fait en sorte de concatener les elements du fichier au lieu de les remplacer
+                        outName = openFileOutput(LIGHTS, MODE_APPEND);
+                        outName.write(new_scene.getBytes());
+                        outName.write("\n".getBytes());
+                        if (outName != null)
+                            outName.close();
+
+                        OutputStreamWriter outColor = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
+                        test = Integer.toString(Preferences.getColor());
+                        outColor.write(test + "\n");
+                        test = Integer.toString(Preferences.getBrightness());
+                        outColor.write(test + "\n");
+                        test = Integer.toString(Preferences.getSaturation());
+                        outColor.write(test + "\n");
+
+
+                        if (outColor != null)
+                            outColor.close();
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    inName = openFileInput(LIGHTS);
+                    int value;
+                    while ((value = inName.read()) != -1) {
+                        StringBuffer lu = new StringBuffer();
+                        while ((value != 10)) {
+                            lu.append((char) value);
+                            value = inName.read();
+                        }
+                        nom = lu.toString();
+                        List_name.add(nom);
+                    }
+
+                    if (inName != null)
+                        inName.close();
+
+                    InputStream inColor = openFileInput(COLORS);
+                    InputStreamReader inputreader = new InputStreamReader(inColor);
+                    BufferedReader buffreader = new BufferedReader(inputreader);
+
+                    String line;
+                    while ((line = buffreader.readLine()) != null) {
+                        List_colors.add(Integer.parseInt(line));
+                    }
+                    inColor.close();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
+                liste.setAdapter(adapter);
+                registerForContextMenu(liste);
+
+                liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        Preferences.applyLampStates(List_colors.get(3 * position), List_colors.get(3 * position + 1), List_colors.get(3 * position + 2));
+                    }
+                });
             }
         }
+
     }
 
     private void delete(int position){
@@ -194,7 +162,6 @@ public class ApplyScene extends Activity{
             List_colors.remove(List_colors.get(3* position));
             List_colors.remove(List_colors.get(3*position ));
             List_colors.remove(List_colors.get(3* position));
-            //adapter.notifyDataSetChanged();
             FileOutputStream outName2 = openFileOutput(LIGHTS, MODE_PRIVATE);
             OutputStreamWriter outColor2 = new OutputStreamWriter(openFileOutput(COLORS, MODE_PRIVATE));
             String test2;
@@ -203,7 +170,6 @@ public class ApplyScene extends Activity{
                 outName2.close();
                 outColor2.write("");
                 outColor2.close();
-                //adapter.notifyDataSetChanged();
             }
             else{
                 outName2.write(List_name.get(0).getBytes());
@@ -233,7 +199,6 @@ public class ApplyScene extends Activity{
                 }
                 outName3.close();
                 outColor3.close();
-                //adapter.notifyDataSetChanged();
             }
 
         } catch (FileNotFoundException e) {
@@ -243,33 +208,6 @@ public class ApplyScene extends Activity{
         }
 
     }
-
-    private void rename(int position, String new_name){
-        List_name.set(position, new_name);
-    }
-
-
-    PHLightListener listener = new PHLightListener() {
-        @Override
-        public void onSuccess() {                        }
-
-        @Override
-        public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
-            Log.w(MainActivity.TAG, "Light has updated");
-        }
-
-        @Override
-        public void onError(int arg0, String arg1) {                        }
-
-        @Override
-        public void onReceivingLightDetails(PHLight arg0) {                        }
-
-        @Override
-        public void onReceivingLights(List<PHBridgeResource> arg0) {                        }
-
-        @Override
-        public void onSearchComplete() {                        }
-    };
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {

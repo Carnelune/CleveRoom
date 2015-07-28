@@ -193,24 +193,6 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void applyLampStates(int color,int brightness, int saturation){
-        Preferences prefs = Preferences.getInstance(getApplicationContext());
-        final String lampe_id = prefs.getLightChose();
-        PHBridge bridge = phHueSDK.getSelectedBridge();
-        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-
-        for (PHLight light : allLights) {
-            if (light.getIdentifier().equals(lampe_id)) {
-                PHLightState lightState = new PHLightState();
-                lightState.setHue(color);
-                lightState.setBrightness(brightness);
-                lightState.setSaturation(saturation);
-                lightState.setOn(true);
-                bridge.updateLightState(light, lightState, listener);
-            }
-        }
-    }
-
     public void doClignoter() {
         Preferences prefs = Preferences.getInstance(getApplicationContext());
         final String lampe_id = prefs.getLightChose();
@@ -243,10 +225,8 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
         }
-        applyLampStates(couleur, brightness, saturation);
+        Preferences.applyLampStates(couleur, brightness, saturation);
     }
-
-
 
     @Override
     public void onBackPressed(){
