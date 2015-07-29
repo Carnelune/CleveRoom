@@ -199,9 +199,10 @@ public class MainActivity extends Activity {
         PHBridge bridge = phHueSDK.getSelectedBridge();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
         int i;
-        int couleur = Preferences.getColor();
+        int color = Preferences.getColor();
         int brightness = Preferences.getBrightness();
         int saturation = Preferences.getSaturation();
+        boolean on = Preferences.getOn();
         for(i=0; i<65280; i=i+6528) {
             for (PHLight light : allLights) {
                 if(light.getIdentifier().equals(lampe_id)){
@@ -225,7 +226,8 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
         }
-        Preferences.applyLampStates(couleur, brightness, saturation);
+        Preferences.applyLampStates(color, brightness, saturation);
+        Preferences.setOn(on);
     }
 
     @Override

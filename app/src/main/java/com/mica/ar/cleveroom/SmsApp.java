@@ -36,6 +36,7 @@ public class SmsApp extends BroadcastReceiver {
         int color = Preferences.getColor();
         int saturation = Preferences.getSaturation();
         int brightness = Preferences.getBrightness();
+        boolean on = Preferences.getOn();
         if ((intent.getAction().equals(ACTION_RECEIVE_SMS)) && prefs.getSms()) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
@@ -86,6 +87,7 @@ public class SmsApp extends BroadcastReceiver {
                 }
             }
             Preferences.applyLampStates(color,brightness,saturation);
+            Preferences.setOn(on);
         }
     }
 }

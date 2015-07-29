@@ -49,6 +49,38 @@ public class Preferences {
         return username;
     }
 
+    public static boolean getOn(){
+        boolean on = false;
+
+        String lampe_id = getLightChose();
+        PHHueSDK phHueSDK = PHHueSDK.create();
+        PHBridge bridge = phHueSDK.getSelectedBridge();
+        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+
+        for (PHLight light : allLights) {
+            if (light.getIdentifier().equals(lampe_id)) {
+                on = light.getLastKnownLightState().isOn();
+            }
+        }
+        return on;
+    }
+
+    public static boolean setOn(boolean on){
+        String lampe_id = getLightChose();
+        PHHueSDK phHueSDK = PHHueSDK.create();
+        PHBridge bridge = phHueSDK.getSelectedBridge();
+        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+
+        for (PHLight light : allLights) {
+            if (light.getIdentifier().equals(lampe_id)) {
+                PHLightState lightState = new PHLightState();
+                lightState.setOn(on);
+                bridge.updateLightState(light, lightState);
+            }
+        }
+        return on;
+    }
+
     public static int getColor(){
         int color = 0;
 
@@ -60,7 +92,6 @@ public class Preferences {
         for (PHLight light : allLights) {
             if (light.getIdentifier().equals(lampe_id)) {
                 color = light.getLastKnownLightState().getHue();
-
             }
         }
 
@@ -95,6 +126,7 @@ public class Preferences {
 
         for (PHLight light : allLights) {
             if (light.getIdentifier().equals(lampe_id)) {
+
                 brightness = light.getLastKnownLightState().getBrightness();
 
             }

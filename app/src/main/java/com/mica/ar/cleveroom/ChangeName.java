@@ -43,7 +43,7 @@ public class ChangeName extends Activity {
         ok = (Button)findViewById(R.id.ok);
         ok.setOnClickListener(okListener);
 
-        annuler = (Button)findViewById(R.id.annuler);
+        annuler = (Button)findViewById(R.id.cancel);
         annuler.setOnClickListener(annulerListener);
     }
 

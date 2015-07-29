@@ -12,7 +12,7 @@
         android:inputType="textMultiLine"
         android:lines="1" />
     <Button
-        android:id="@+id/annuler"
+        android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text = "@string/btn_annuler"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text = "@string/btn_ok"
         android:layout_below ="@id/name_scene"
-        android:layout_toRightOf="@id/annuler"
+        android:layout_toRightOf="@id/cancel"
         android:layout_marginLeft="25dip"/>
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.mica.ar.cleveroom;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,7 +47,7 @@ import java.util.*;
 import java.io.*;
 
 /**
- * Apply a scene on the current light
+ * Apply a scene by clicking on one of the items on the screen
  */
 public class ApplyScene extends Activity{
     ListView liste = null;
@@ -66,22 +67,25 @@ public class ApplyScene extends Activity{
         FileOutputStream outName= null;
         FileInputStream inName = null;
         String test = new String();
-        PHHueSDK phHueSDK;
-        phHueSDK = PHHueSDK.create();
-        PHBridge bridge = phHueSDK.getSelectedBridge();
-        Preferences prefs = Preferences.getInstance(getApplicationContext());
-        String lampe_id = prefs.getLightChose();
-        List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-        for (PHLight light : allLights) {
-            if (light.getIdentifier().equals(lampe_id)) {
+        //PHHueSDK phHueSDK;
+        //phHueSDK = PHHueSDK.create();
+        //PHBridge bridge = phHueSDK.getSelectedBridge();
+        //Preferences prefs = Preferences.getInstance(getApplicationContext());
+        //String lampe_id = prefs.getLightChose();
+        //List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+        //for (PHLight light : allLights) {
+            //if (light.getIdentifier().equals(lampe_id)) {
 
+                //First, the system checks if the ApplyScene activity
+                //has received an Extra from the AddScene activity
+                //The Extra would be the name of a new scene to add to the scenes of list
                 if (this.getIntent().getExtras() != null) {
-                    ajout = true;
                     Intent i = getIntent();
                     String new_scene = i.getStringExtra(AddScene.NOM);
+                    //new_scene is the name of the new scene to add to the ListView liste.
 
                     try {
-                        // le mode MODE_APPEND fait en sorte de concatener les elements du fichier au lieu de les remplacer
+                        // The MODE_APPEND mode concatenates the file elements instead of replacing them
                         outName = openFileOutput(LIGHTS, MODE_APPEND);
                         outName.write(new_scene.getBytes());
                         outName.write("\n".getBytes());
@@ -142,20 +146,30 @@ public class ApplyScene extends Activity{
                 adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
                 liste.setAdapter(adapter);
                 registerForContextMenu(liste);
+                //liste.isItemChecked(0);
+                int i = 0;
+                while(i<List_name.size()) {
+                    if (Preferences.getColor() == List_colors.get(3 * i) && Preferences.getBrightness() == List_colors.get(3 * i + 1) && Preferences.getSaturation() == List_colors.get(3 * i + 2)) {
+                        liste.setItemChecked(i, true);
+                        i = List_name.size();
+                    }
+                    else{
+                        i++;
+                    }
+                }
+
 
                 liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                         Preferences.applyLampStates(List_colors.get(3 * position), List_colors.get(3 * position + 1), List_colors.get(3 * position + 2));
                     }
                 });
-            }
-        }
+            //}
+        //}
 
     }
-
     private void delete(int position){
         try {
             List_name.remove(List_name.get(position));
