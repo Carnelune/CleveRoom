@@ -33,6 +33,7 @@ import java.util.Map;
 public class MainActivity extends Activity {
     private PHHueSDK phHueSDK;
     public static final String TAG = "CleveRoom";
+    private int count = 0 ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,12 +101,20 @@ public class MainActivity extends Activity {
     }
 
     public void lightOn(String id) {
+        count ++ ;
+
         PHBridge bridge = phHueSDK.getSelectedBridge();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
         for (PHLight light : allLights) {
             if(light.getIdentifier().equals(id)) {
                 PHLightState lightState = new PHLightState();
+                if (count == 10) {
+                    Intent intent = new Intent(MainActivity.this, Morse.class);
+                    startActivity(intent);
+                    count = 0 ;
+                }
+
                 lightState.setOn(true);
                 bridge.updateLightState(light, lightState, listener);
             }
@@ -113,6 +122,7 @@ public class MainActivity extends Activity {
     }
 
     public void lightOff(String id) {
+        count = 0 ;
         PHBridge bridge = phHueSDK.getSelectedBridge();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
@@ -126,11 +136,13 @@ public class MainActivity extends Activity {
     }
 
     public void changeColor() {
+        count = 0 ;
         Intent intent = new Intent(MainActivity.this, Colors.class);
         startActivity(intent);
     }
 
     public void doScene(){
+        count = 0 ;
         Intent intent = new Intent(MainActivity.this, ApplyScene.class);
         startActivity(intent);
     }
@@ -175,6 +187,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        count = 0 ;
 
         switch (item.getItemId()) {
 
@@ -192,6 +205,7 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public void doClignoter() {
         Preferences prefs = Preferences.getInstance(getApplicationContext());
