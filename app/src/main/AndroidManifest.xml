@@ -55,6 +55,11 @@
             android:name=".Options"
             android:label="@string/change_options" >
         </activity>
+        <activity
+            android:name=".Morse"
+            android:label="@string/morse" >
+
+            </activity>
         <receiver class="com.mica.ar.cleveroom.SmsApp"
             android:name="com.mica.ar.cleveroom.SmsApp">
             <intent-filter android:priority="100">

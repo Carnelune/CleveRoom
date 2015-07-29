@@ -19,6 +19,7 @@ public class AddScene extends Activity {
     Button ok = null;
     Button annuler = null;
 
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_scene);
@@ -73,5 +74,6 @@ public class AddScene extends Activity {
         Intent intent = new Intent(AddScene.this, (MainActivity.class));
         startActivity(intent);
     }
+
 
 }
