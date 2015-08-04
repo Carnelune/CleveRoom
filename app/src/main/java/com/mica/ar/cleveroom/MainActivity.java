@@ -27,8 +27,10 @@ import java.util.Map;
  * Actions on the selected lamp
  *      On
  *      Off
- *      Change light
- *      Create scene
+ *      Apply scene
+ *      Change the lamp's name
+ *      Spot the light
+ *      Options
  */
 public class MainActivity extends Activity {
     private PHHueSDK phHueSDK;
@@ -44,15 +46,16 @@ public class MainActivity extends Activity {
         PHBridge bridge = phHueSDK.getSelectedBridge();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
         Preferences prefs = Preferences.getInstance(getApplicationContext());
-
+        //We save the id of the current lamp in lamp_id
         final String lampe_id = prefs.getLightChose();
         String lampe = "";
 
         for (PHLight light : allLights) {
             if(light.getIdentifier().equals(lampe_id))
+                //Here we save the current lamp's name in the variable lampe
                 lampe=light.getName();
         }
-
+        //lampe is displayed on the screen
         TextView t1 = (TextView) findViewById(R.id.lightname);
         t1.setText(lampe);
 
@@ -100,6 +103,7 @@ public class MainActivity extends Activity {
         });
     }
 
+    //lightOn(String id) turns on the lamp whose identifier is id
     public void lightOn(String id) {
         count ++ ;
 
@@ -114,13 +118,12 @@ public class MainActivity extends Activity {
                     startActivity(intent);
                     count = 0 ;
                 }
-
                 lightState.setOn(true);
                 bridge.updateLightState(light, lightState, listener);
             }
         }
     }
-
+    //lightOff(String id) turns off the lamp whose identifier is id
     public void lightOff(String id) {
         count = 0 ;
         PHBridge bridge = phHueSDK.getSelectedBridge();
@@ -134,13 +137,14 @@ public class MainActivity extends Activity {
             }
         }
     }
-
+    //ChangeColor() starts the Colors activity
     public void changeColor() {
         count = 0 ;
         Intent intent = new Intent(MainActivity.this, Colors.class);
         startActivity(intent);
     }
 
+    //doScene() starts the ApplyScene activity
     public void doScene(){
         count = 0 ;
         Intent intent = new Intent(MainActivity.this, ApplyScene.class);
@@ -179,6 +183,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    //We create an option Menu that appears when the user clicks on the button Menu of the Smartphone
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option, menu);
@@ -190,14 +195,16 @@ public class MainActivity extends Activity {
         count = 0 ;
 
         switch (item.getItemId()) {
-
+            //If the user choses to click on the item "change the lamp's name" the ChangeName activity is launched
             case R.id.changeName:
                 Intent intent = new Intent(MainActivity.this, ChangeName.class);
                 startActivity(intent);
                 break;
+            //If the user choses to click on the item "Spot the light" the function doClignoter() is called
             case R.id.spotLight:
-                doClignoter();
+                doFlash();
                 break;
+            //If the user choses the item "Options" the Options activity is launched
             case R.id.options:
                 Intent options = new Intent(MainActivity.this, Options.class);
                 startActivity(options);
@@ -206,18 +213,19 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void doClignoter() {
+    //doFlash() makes the current lamp flash in several colors for 10 seconds
+    public void doFlash() {
         Preferences prefs = Preferences.getInstance(getApplicationContext());
         final String lampe_id = prefs.getLightChose();
         PHBridge bridge = phHueSDK.getSelectedBridge();
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
         int i;
+        //We save the current state of the lamp
         int color = Preferences.getColor();
         int brightness = Preferences.getBrightness();
         int saturation = Preferences.getSaturation();
         boolean on = Preferences.getOn();
-        for(i=0; i<65280; i=i+6528) {
+        for(i=0; i<65536; i=i+6553) {
             for (PHLight light : allLights) {
                 if(light.getIdentifier().equals(lampe_id)){
                     PHLightState lightState = new PHLightState();
@@ -240,11 +248,14 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
         }
+        //At the end we put back the previous states of the light
         Preferences.applyLampStates(color, brightness, saturation);
-        Preferences.setOn(on);
+        Preferences.setLamp(on);
     }
 
     @Override
+    //When the Back button of the Smartphone is pressed, MainActivity  is closed
+    //And the system goes back to ListLightActivity.
     public void onBackPressed(){
         Intent intent = new Intent(MainActivity.this, ListLightActivity.class);
         startActivity(intent);

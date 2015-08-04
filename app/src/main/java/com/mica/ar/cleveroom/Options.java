@@ -18,7 +18,7 @@ import com.philips.lighting.model.PHLight;
 import java.util.List;
 
 /**
- * Options of the app
+ * Options of the application
  */
 public class Options extends Activity {
     private CheckBox CheckBox_Sms;
@@ -37,8 +37,8 @@ public class Options extends Activity {
         CheckBox_Sms.setText(R.string.options_sms);
         Button_Ok.setText(R.string.options_ok);
 
+        //The state of the checkbox is updated.
         CheckBox_Sms.setChecked(prefs.getSms());
-
 
         CheckBox_Sms.setOnClickListener(checkedListener);
 
@@ -62,10 +62,10 @@ public class Options extends Activity {
         }
     };
 
+    //When the OK button is pressed, the Options activity is closed
    private View.OnClickListener Button_OkListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Options.this.finish();
 
         }

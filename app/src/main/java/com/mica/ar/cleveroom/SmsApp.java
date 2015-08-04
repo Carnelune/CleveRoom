@@ -19,48 +19,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Lamp blinks when a SMS is received
+ * Lamp blinks when an SMS is received
  */
-
 
 public class SmsApp extends BroadcastReceiver {
     // Get the object of SmsManager
-    final SmsManager sms = SmsManager.getDefault();
-    private static PHHueSDK phHueSDK;
-
-    private final String ACTION_RECEIVE_SMS = "android.provider.Telephony.SMS_RECEIVED";
+     private final String ACTION_RECEIVE_SMS = "android.provider.Telephony.SMS_RECEIVED";
 
     @Override
     public void onReceive (Context context, Intent intent)  {
         Preferences prefs = Preferences.getInstance(context);
+        //The current color of the light is saved in variable color
         int color = Preferences.getColor();
+        //The current saturation of the light is saved in variable saturation
         int saturation = Preferences.getSaturation();
+        //The current brightness of the light is saved in variable brightness
         int brightness = Preferences.getBrightness();
+        //on is true if the lamp is currently on
         boolean on = Preferences.getOn();
+        //The system checks if an SMS has been received AND if the CheckBox_SMS is checked
         if ((intent.getAction().equals(ACTION_RECEIVE_SMS)) && prefs.getSms()) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                PHLightListener listener = new PHLightListener() {
-                    @Override
-                    public void onSuccess() {                    }
-
-                    @Override
-                    public void onStateUpdate(Map<String, String> arg0, List<PHHueError> arg1) {
-                        Log.w(MainActivity.TAG, "Light has updated");
-                    }
-
-                    @Override
-                    public void onError(int arg0, String arg1) {                    }
-
-                    @Override
-                    public void onReceivingLightDetails(PHLight arg0) {                    }
-
-                    @Override
-                    public void onReceivingLights(List<PHBridgeResource> arg0) {                    }
-
-                    @Override
-                    public void onSearchComplete() {                    }
-                };
 
                 PHHueSDK phHueSDK;
                 phHueSDK = PHHueSDK.create();
@@ -71,23 +51,25 @@ public class SmsApp extends BroadcastReceiver {
                 for (PHLight light : allLights) {
                     if(light.getIdentifier().equals(lampe_id)) {
                         PHLightState lightState = new PHLightState();
-                        //light flashs in green when the user receives an sms
+                        //light flashes in green when the user receives an sms
                         lightState.setHue(28000);
                         lightState.setOn(true);
                         lightState.setAlertMode(PHLight.PHLightAlertMode.ALERT_LSELECT);
-                        bridge.updateLightState(light, lightState, listener);
+                        bridge.updateLightState(light, lightState);
                         try {
+                            //We make the light blinks for 5 seconds
                             Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         lightState.setOn(false);
-                        bridge.updateLightState(light, lightState, listener);
+                        bridge.updateLightState(light, lightState);
                     }
                 }
             }
+            //At the end we put back the previous states of the light
             Preferences.applyLampStates(color,brightness,saturation);
-            Preferences.setOn(on);
+            Preferences.setLamp(on);
         }
     }
 }

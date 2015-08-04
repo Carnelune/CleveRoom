@@ -49,6 +49,7 @@ public class Preferences {
         return username;
     }
 
+    //getOn() returns true if the light is on.
     public static boolean getOn(){
         boolean on = false;
 
@@ -65,7 +66,8 @@ public class Preferences {
         return on;
     }
 
-    public static boolean setOn(boolean on){
+    //setLamp(boolean on) turns on the light if on is true, turns it off if on is false
+    public static void setLamp(boolean on){
         String lampe_id = getLightChose();
         PHHueSDK phHueSDK = PHHueSDK.create();
         PHBridge bridge = phHueSDK.getSelectedBridge();
@@ -78,9 +80,10 @@ public class Preferences {
                 bridge.updateLightState(light, lightState);
             }
         }
-        return on;
+
     }
 
+    //getColor() returns the value of the current color of the light
     public static int getColor(){
         int color = 0;
 
@@ -98,6 +101,7 @@ public class Preferences {
         return color;
     }
 
+    //getSaturation() returns the value of the current saturation of the light
     public static int getSaturation(){
         int saturation = 0;
 
@@ -116,6 +120,7 @@ public class Preferences {
         return saturation;
     }
 
+    //getBrightness() returns the value of the current brightness of the light
     public static int getBrightness(){
         int brightness = 0;
 
@@ -135,6 +140,7 @@ public class Preferences {
         return brightness;
     }
 
+    //applyLampStates(int c, int b, int s) applies the color c, the brightness b and the saturation s to the lamp.
     public static void applyLampStates(int color, int brightness, int saturation) {
         String lampe_id = getLightChose();
         PHHueSDK phHueSDK = PHHueSDK.create();
@@ -167,10 +173,13 @@ public class Preferences {
         return (mSharedPreferencesEditor.commit());
     }
 
+    //getLightChose() returns the id of the chosen light.
     public static String getLightChose(){
         return mSharedPreferences.getString(LIGHT_CHOSE, "");
     }
 
+
+    //setLightChose(String idLight) set an id to the current lamp
     public boolean setLightChose(String idLight){
         mSharedPreferencesEditor.putString(LIGHT_CHOSE, idLight);
         return (mSharedPreferencesEditor.commit());
@@ -181,6 +190,7 @@ public class Preferences {
         return (mSharedPreferencesEditor.commit());
     }
 
+    //getSms() returns true if the CheckBox_SMS is checked.
     public Boolean getSms(){
         return mSharedPreferences.getBoolean(COCHE_SMS,false);
     }

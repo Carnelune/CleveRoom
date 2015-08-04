@@ -51,7 +51,6 @@ import java.io.*;
  */
 public class ApplyScene extends Activity{
     ListView liste = null;
-    Boolean ajout = false;
     final String LIGHTS = "Name_scenes.txt";
     final String COLORS = "Lights_configuration.txt";
     List<String> List_name = new ArrayList<>();
@@ -64,121 +63,137 @@ public class ApplyScene extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apply_scene);
         liste = (ListView) findViewById(R.id.listView);
+        // Scenes names and lights configurations will be saved in two files:
+        // "Name_scenes.txt" and "Lights_configuration"
+        //Then, these two files will be copied in two lists:
+        //List_name, a String list for the names, and List_colors, an Integer list for the light configurations.
         FileOutputStream outName= null;
         FileInputStream inName = null;
         String test = new String();
-        //PHHueSDK phHueSDK;
-        //phHueSDK = PHHueSDK.create();
-        //PHBridge bridge = phHueSDK.getSelectedBridge();
-        //Preferences prefs = Preferences.getInstance(getApplicationContext());
-        //String lampe_id = prefs.getLightChose();
-        //List<PHLight> allLights = bridge.getResourceCache().getAllLights();
-        //for (PHLight light : allLights) {
-            //if (light.getIdentifier().equals(lampe_id)) {
-
-                //First, the system checks if the ApplyScene activity
-                //has received an Extra from the AddScene activity
-                //The Extra would be the name of a new scene to add to the scenes of list
-                if (this.getIntent().getExtras() != null) {
-                    Intent i = getIntent();
-                    String new_scene = i.getStringExtra(AddScene.NOM);
-                    //new_scene is the name of the new scene to add to the ListView liste.
-
-                    try {
-                        // The MODE_APPEND mode concatenates the file elements instead of replacing them
-                        outName = openFileOutput(LIGHTS, MODE_APPEND);
-                        outName.write(new_scene.getBytes());
-                        outName.write("\n".getBytes());
-                        if (outName != null)
-                            outName.close();
-
-                        OutputStreamWriter outColor = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
-                        test = Integer.toString(Preferences.getColor());
-                        outColor.write(test + "\n");
-                        test = Integer.toString(Preferences.getBrightness());
-                        outColor.write(test + "\n");
-                        test = Integer.toString(Preferences.getSaturation());
-                        outColor.write(test + "\n");
 
 
-                        if (outColor != null)
-                            outColor.close();
+        //First, the system checks if the ApplyScene activity
+        //has received an Intent from the AddScene activity
+        //The Extra would be the name of a new scene to add to the scenes list
+        if (this.getIntent().getExtras() != null) {
+            Intent i = getIntent();
+            String new_scene = i.getStringExtra(AddScene.NOM);
+            //new_scene is the name of the new scene to add to the ListView liste
 
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            try {
+                // The APPEND mode concatenates the file elements instead of replacing them
+                outName = openFileOutput(LIGHTS, MODE_APPEND);
+                outName.write(new_scene.getBytes());
+                outName.write("\n".getBytes());
+                //The name is added to the names file, followed by a line break
+                if (outName != null)
+                    outName.close();
+
+
+                OutputStreamWriter outColor = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
+                //The current color of the light is cast into String and saved in test
+                test = Integer.toString(Preferences.getColor());
+                //then test is added in the configurations file, followed by a line break
+                outColor.write(test + "\n");
+                //Same for the brightness and saturation
+                test = Integer.toString(Preferences.getBrightness());
+                outColor.write(test + "\n");
+                test = Integer.toString(Preferences.getSaturation());
+                outColor.write(test + "\n");
+
+
+                if (outColor != null)
+                    outColor.close();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Now, we read the files in order to save their items in the lists
+        try {
+            inName = openFileInput(LIGHTS);
+            int value;
+            while ((value = inName.read()) != -1) {
+                StringBuffer lu = new StringBuffer();
+                //A name is separated from another one by a line break.
+                while ((value != 10)) {
+                    lu.append((char) value);
+                    value = inName.read();
                 }
-                try {
-                    inName = openFileInput(LIGHTS);
-                    int value;
-                    while ((value = inName.read()) != -1) {
-                        StringBuffer lu = new StringBuffer();
-                        while ((value != 10)) {
-                            lu.append((char) value);
-                            value = inName.read();
-                        }
-                        nom = lu.toString();
-                        List_name.add(nom);
-                    }
+                nom = lu.toString();
+                //The name is added in List_name
+                List_name.add(nom);
+            }
 
-                    if (inName != null)
-                        inName.close();
+            if (inName != null)
+                inName.close();
 
-                    InputStream inColor = openFileInput(COLORS);
-                    InputStreamReader inputreader = new InputStreamReader(inColor);
-                    BufferedReader buffreader = new BufferedReader(inputreader);
+            InputStream inColor = openFileInput(COLORS);
+            InputStreamReader inputreader = new InputStreamReader(inColor);
+            BufferedReader buffreader = new BufferedReader(inputreader);
 
-                    String line;
-                    while ((line = buffreader.readLine()) != null) {
-                        List_colors.add(Integer.parseInt(line));
-                    }
-                    inColor.close();
+            String line;
+            //Here we read line by line each number and add it in List_colors after casting it into Integer.
+            while ((line = buffreader.readLine()) != null) {
+                List_colors.add(Integer.parseInt(line));
+            }
+            inColor.close();
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        //We create the adapter, by precising that the layout is a list of single choice items.
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
 
-                adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, List_name);
-                liste.setAdapter(adapter);
-                registerForContextMenu(liste);
-                //liste.isItemChecked(0);
-                int i = 0;
-                while(i<List_name.size()) {
-                    if (Preferences.getColor() == List_colors.get(3 * i) && Preferences.getBrightness() == List_colors.get(3 * i + 1) && Preferences.getSaturation() == List_colors.get(3 * i + 2)) {
-                        liste.setItemChecked(i, true);
-                        i = List_name.size();
-                    }
-                    else{
-                        i++;
-                    }
-                }
+        //We set the adapter to the ListView liste
+        liste.setAdapter(adapter);
+
+        //We register the ListView to which the context menu will be associated
+        //when the user will make a long press on an item, the floating menu will appear.
+        registerForContextMenu(liste);
 
 
-                liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //Here we see if one the scenes is applied to make its item checked by comparing the current light with the light settings saved in List_colors
+        int i = 0;
+        while(i<List_name.size()) {
+            if (Preferences.getColor() == List_colors.get(3 * i) && Preferences.getBrightness() == List_colors.get(3 * i + 1) && Preferences.getSaturation() == List_colors.get(3 * i + 2)) {
+                liste.setItemChecked(i, true);
+                i = List_name.size();
+            }
+            else{
+                i++;
+            }
+        }
+        liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //When the user clicks on an item, we apply its light settings by calling the applyLampsStates function
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Preferences.applyLampStates(List_colors.get(3 * position), List_colors.get(3 * position + 1), List_colors.get(3 * position + 2));
+            }
+        });
+      }
 
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Preferences.applyLampStates(List_colors.get(3 * position), List_colors.get(3 * position + 1), List_colors.get(3 * position + 2));
-                    }
-                });
-            //}
-        //}
-
-    }
     private void delete(int position){
+        //In order to delete an item from the ListView, we need to remove its name from List_name,
+        //remove its color, brightness and saturation from List_colors
+        //and then remove them from the two files.
         try {
             List_name.remove(List_name.get(position));
             List_colors.remove(List_colors.get(3* position));
             List_colors.remove(List_colors.get(3*position ));
             List_colors.remove(List_colors.get(3* position));
+            //We open the files on a private mode to only keep the first item
+            //This first item will then be replaced if another writing is made
             FileOutputStream outName2 = openFileOutput(LIGHTS, MODE_PRIVATE);
             OutputStreamWriter outColor2 = new OutputStreamWriter(openFileOutput(COLORS, MODE_PRIVATE));
             String test2;
+            //If List_name is null, we delete the item of the files by writing "".
             if(List_name.size()==0){
                 outName2.write("".getBytes());
                 outName2.close();
@@ -186,6 +201,7 @@ public class ApplyScene extends Activity{
                 outColor2.close();
             }
             else{
+                //If the lists are not null, we copy the first items of the lists
                 outName2.write(List_name.get(0).getBytes());
                 outName2.write("\n".getBytes());
                 outName2.close();
@@ -196,6 +212,7 @@ public class ApplyScene extends Activity{
                 test2 = Integer.toString(List_colors.get(2));
                 outColor2.write(test2 + "\n");
                 outColor2.close();
+                //Then, we open againthe files on MODE_APPEND in order to concatenate the items, and then we copy the lists.
                 FileOutputStream outName3 = openFileOutput(LIGHTS, MODE_APPEND);
                 OutputStreamWriter outColor3 = new OutputStreamWriter(openFileOutput(COLORS, MODE_APPEND));
                 String test3;
@@ -225,6 +242,7 @@ public class ApplyScene extends Activity{
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        //Here we create a floating menu that will appear when the user makes a long click on an item.
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_apply_scene, menu);
@@ -234,6 +252,7 @@ public class ApplyScene extends Activity{
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
+            //Here when the user clicks on the delete button, the delete function is called.
             case R.id.delete:
                 delete((int)info.id);
                 adapter.notifyDataSetChanged();
@@ -243,6 +262,8 @@ public class ApplyScene extends Activity{
         }
     }
 
+    //When the Back button of the Smartphone is pressed, the ApplyScene activity is closed
+    //And the system goes back to the MainActivity.
     public void onBackPressed(){
         Intent intent = new Intent(ApplyScene.this, (MainActivity.class));
         startActivity(intent);

@@ -31,7 +31,7 @@ import java.util.Map;
 public class ChangeName extends Activity {
     EditText name = null;
     Button ok = null;
-    Button annuler = null;
+    Button cancel = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +43,12 @@ public class ChangeName extends Activity {
         ok = (Button)findViewById(R.id.ok);
         ok.setOnClickListener(okListener);
 
-        annuler = (Button)findViewById(R.id.cancel);
-        annuler.setOnClickListener(annulerListener);
+        cancel = (Button)findViewById(R.id.cancel);
+        cancel.setOnClickListener(cancelListener);
     }
 
-    public Boolean equal(List<String> liste, String name){
+    //Function which returns true if name belongs in liste.
+    public Boolean belongs(List<String> liste, String name){
         boolean equal = false;
         int i=0;
         while(i<liste.size() && !equal){
@@ -75,13 +76,16 @@ public class ChangeName extends Activity {
     private OnClickListener okListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            //We save the edited text in the String NOM and we check if it is a valid name
             String nom = name.getText().toString();
             List<String> List_name = new ArrayList<>();
 
             if ((nom.equals("")) || nom.length()>32) {
+                //If NOM is null or has more than 32 characters, a short message "Error name" appears on the screen
                 Toast.makeText(ChangeName.this, "Error name", Toast.LENGTH_SHORT).show();
             }
             else{
+                //Then we check if the name given is not already assigned to another lamp
                 PHHueSDK phHueSDK;
                 phHueSDK = PHHueSDK.create();
                 PHBridge bridge = phHueSDK.getSelectedBridge();
@@ -94,12 +98,14 @@ public class ChangeName extends Activity {
 
                     }
                 }
+                //List_name contains the names of all the other lamps of the bridge
 
-                if (equal(List_name, nom)) {
+                if (belongs(List_name, nom)) {
+                    //If the name NOM belongs to List_name, a short message appears.
                     Toast.makeText(ChangeName.this, "Name already assigned to another lamp", Toast.LENGTH_LONG).show();
                 }
                 else {
-
+                    //Otherwise we set the new name to the light, show a message and go back to the MainActivity
                     for (PHLight light : allLights) {
                         if (light.getIdentifier().equals(lampe_id)) {
                             light.setName(nom);
@@ -115,10 +121,11 @@ public class ChangeName extends Activity {
         }
     };
 
-    private OnClickListener annulerListener = new OnClickListener() {
+    private OnClickListener cancelListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(ChangeName.this, "Operation annulee", Toast.LENGTH_SHORT).show();
+            //By pressing the cancel button the ChangeName activity is closed.
+            Toast.makeText(ChangeName.this, "Transaction canceled", Toast.LENGTH_SHORT).show();
             ChangeName.this.finish();
         }
     };

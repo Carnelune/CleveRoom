@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /*
- * Change the 4 settings of the lamp's light
+ * Change the 3 settings of the lamp's light: The color, the brightness and the saturation
+ * launch the AddScene activity by pressing the Add_Scene button.
  */
 public class Colors extends Activity{
     private SeekBar seekBar_Color;
@@ -37,8 +38,6 @@ public class Colors extends Activity{
 
     private Button add_scene;
     private Button OK;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,24 +60,25 @@ public class Colors extends Activity{
         OK = (Button) findViewById(R.id.OK);
         OK.setOnClickListener(OKListener);
 
-
         change_color.setText(R.string.color);
         change_saturation.setText(R.string.saturation);
         change_brightness.setText(R.string.brightness);
 
+        //When the Colors activity is launched, the three seekbars are updated following the current color, saturation and brightness of the light
         seekBar_Color.setProgress(Preferences.getColor());
         seekBar_Saturation.setProgress(Preferences.getSaturation());
         seekBar_Brightness.setProgress(Preferences.getBrightness());
 
-        //Light nuance
+
         seekBar_Color.setOnSeekBarChangeListener(
+                //When the user will modify the seekBar, the color of the light will be updated according to the position of the button on the seekbar
                 new OnSeekBarChangeListener() {
                     int progress = 0;
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar1, int progresValue, boolean fromUser) {
                         progress = progresValue;
-
+                        //The progresValue goes from 0 to 65536 so as the parameter of the setHue function which applies a color to the lamp.
                         PHHueSDK phHueSDK = PHHueSDK.create();
                         PHBridge bridge = phHueSDK.getSelectedBridge();
                         Preferences prefs = Preferences.getInstance(getApplicationContext());
@@ -104,14 +104,16 @@ public class Colors extends Activity{
                     }
                 });
 
-        //Light saturation
+
         seekBar_Saturation.setOnSeekBarChangeListener(
+                //When the user will modify the seekBar, the saturation of the light will be updated according to the position of the button on the seekbar
                 new OnSeekBarChangeListener() {
                     int progress = 0;
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar2, int progresValue, boolean fromUser) {
                         progress = progresValue;
+                        //The progresValue goes from 0 to 250 so as the parameter of the setSaturation function which applies a saturation to the lamp.
 
                         PHHueSDK phHueSDK = PHHueSDK.create();
                         PHBridge bridge = phHueSDK.getSelectedBridge();
@@ -138,14 +140,16 @@ public class Colors extends Activity{
                     }
                 });
 
-        //Light brightness
+
         seekBar_Brightness.setOnSeekBarChangeListener(
+                //When the user will modify the seekBar, the brightness of the light will be updated according to the position of the button on the seekbar
                 new OnSeekBarChangeListener() {
                     int progress = 0;
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar2, int progresValue, boolean fromUser) {
                         progress = progresValue;
+                        //The progresValue goes from 0 to 255 so as the parameter of the setBrightness function which applies a brightness to the lamp.
 
                         PHHueSDK phHueSDK = PHHueSDK.create();
                         PHBridge bridge = phHueSDK.getSelectedBridge();
@@ -173,6 +177,7 @@ public class Colors extends Activity{
                 });
     }
 
+    //By pressing the OK button, the current activity is closed
     private View.OnClickListener OKListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -180,6 +185,7 @@ public class Colors extends Activity{
         }
     };
 
+    //By pressing the add_scene button, the AddScene activity is launched
     private View.OnClickListener add_sceneListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -209,10 +215,5 @@ public class Colors extends Activity{
         @Override
         public void onSearchComplete() {                        }
     };
-
-
-
-
-
 }
 

@@ -79,7 +79,7 @@ public class AddScene extends Activity {
     };
 
     public void onBackPressed(){
-        //When the Back button of the smartphone is pressed, tje AddScene activity is closed
+        //When the Back button of the smartphone is pressed, the AddScene activity is closed
         //And the system goes back to the MainActivity.
         Intent intent = new Intent(AddScene.this, (MainActivity.class));
         startActivity(intent);
