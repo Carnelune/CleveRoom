@@ -21,7 +21,7 @@
     <string name="morse">Easter Egg</string>
 
 
-    <string name="menu_change_name">Change the lamp name</string>
+    <string name="menu_change_name">Change the lamp\'s name</string>
     <string name="menu_add_scene">Add scene</string>
     <string name="menu_spot_light">Spot the light</string>
     <string name ="menu_options">Options</string>

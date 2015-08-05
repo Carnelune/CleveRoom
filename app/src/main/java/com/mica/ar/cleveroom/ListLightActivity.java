@@ -35,12 +35,6 @@ public class ListLightActivity extends Activity implements AdapterView.OnItemCli
         lightList.setAdapter(listLights);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.w(TAG, "Inflating home menu");
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Preferences prefs = Preferences.getInstance(getApplicationContext());
